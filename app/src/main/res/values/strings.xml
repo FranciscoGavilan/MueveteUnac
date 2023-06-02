@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MueveteUnac</string>
+    <string name="title_activity_ruta">RutaActivity</string>
+    <string name="tab_text_1">Ruta</string>
+    <string name="tab_text_2">Viaje</string>
+    <string name="tab_text_3">Paraderos</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_driver">DriverActivity</string>
+    <string name="tab_text_4">Rutas</string>
+    <string name="tab_text_5"> Recorridos</string>
+
+
+</resources>

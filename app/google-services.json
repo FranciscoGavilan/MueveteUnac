@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "810050579136",
+    "project_id": "mueveteunac2-1293c",
+    "storage_bucket": "mueveteunac2-1293c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810050579136:android:2e1fe71c55c61ef4415b25",
+        "android_client_info": {
+          "package_name": "com.example.mueveteunac2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810050579136-o9th830jvg109heftqj6d0jra17c9h88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB7cogQHY21P2QJW7hnctZ01Bf5b01O4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810050579136-o9th830jvg109heftqj6d0jra17c9h88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

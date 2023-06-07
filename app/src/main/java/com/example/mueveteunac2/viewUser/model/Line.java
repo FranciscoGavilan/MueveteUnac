@@ -1,119 +1,114 @@
 package com.example.mueveteunac2.viewUser.model;
 
-import java.io.Serializable;
+public class Line {
+    private String lineId;
+    private String lineName;
+    private String lineSymbol;
+    private String stopFirst;
+    private String stopLast;
+    private String route1stSchedule;
+    private String route2ndSchedule;
+    private String driverName;
+    private String driverLastname;
+    private String busPlate;
 
-public class Line implements Serializable {
-    private String idLine;
-    private String symbol;
-    private String nameLine;
-    private String firstStop;
-    private String lastStop;
-    private String fDepSchedule;
-    private String sDepSchedule;
-    private String firstName;
-    private String firstSurname;
-    private String secondSurname;
-    private String plate;
-
-    public Line(String idLine, String symbol, String nameLine, String firstStop, String lastStop, String fDepSchedule, String sDepSchedule, String firstName, String firstSurname, String secondSurname, String plate) {
-        this.idLine = idLine;
-        this.symbol = symbol;
-        this.nameLine = nameLine;
-        this.firstStop = firstStop;
-        this.lastStop = lastStop;
-        this.fDepSchedule = fDepSchedule;
-        this.sDepSchedule = sDepSchedule;
-        this.firstName = firstName;
-        this.firstSurname = firstSurname;
-        this.secondSurname = secondSurname;
-        this.plate = plate;
+    // empty constructor for firebase
+    public Line() {
+        // Constructor sin argumentos
     }
 
-    public String getIdLine() {
-        return idLine;
+    public Line(String lineId, String lineName, String lineSymbol, String stopFirst,
+                String stopLast, String route1stSchedule, String route2ndSchedule,
+                String driverName, String driverLastname, String busPlate) {
+        this.lineId = lineId;
+        this.lineName = lineName;
+        this.lineSymbol = lineSymbol;
+        this.stopFirst = stopFirst;
+        this.stopLast = stopLast;
+        this.route1stSchedule = route1stSchedule;
+        this.route2ndSchedule = route2ndSchedule;
+        this.driverName = driverName;
+        this.driverLastname = driverLastname;
+        this.busPlate = busPlate;
     }
 
-    public void setIdLine(String idLine) {
-        this.idLine = idLine;
+    public String getLineId() {
+        return lineId;
     }
 
-    public String getSymbol() {
-        return symbol;
+    public void setLineId(String lineId) {
+        this.lineId = lineId;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
+    public String getLineName() {
+        return lineName;
     }
 
-    public String getNameLine() {
-        return nameLine;
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
     }
 
-    public void setNameLine(String nameLine) {
-        this.nameLine = nameLine;
+    public String getLineSymbol() {
+        return lineSymbol;
     }
 
-    public String getFirstStop() {
-        return firstStop;
+    public void setLineSymbol(String lineSymbol) {
+        this.lineSymbol = lineSymbol;
     }
 
-    public void setFirstStop(String firstStop) {
-        this.firstStop = firstStop;
+    public String getStopFirst() {
+        return stopFirst;
     }
 
-    public String getLastStop() {
-        return lastStop;
+    public void setStopFirst(String stopFirst) {
+        this.stopFirst = stopFirst;
     }
 
-    public void setLastStop(String lastStop) {
-        this.lastStop = lastStop;
+    public String getStopLast() {
+        return stopLast;
     }
 
-    public String getfDepSchedule() {
-        return fDepSchedule;
+    public void setStopLast(String stopLast) {
+        this.stopLast = stopLast;
     }
 
-    public void setfDepSchedule(String fDepSchedule) {
-        this.fDepSchedule = fDepSchedule;
+    public String getRoute1stSchedule() {
+        return route1stSchedule;
     }
 
-    public String getsDepSchedule() {
-        return sDepSchedule;
+    public void setRoute1stSchedule(String route1stSchedule) {
+        this.route1stSchedule = route1stSchedule;
     }
 
-    public void setsDepSchedule(String sDepSchedule) {
-        this.sDepSchedule = sDepSchedule;
+    public String getRoute2ndSchedule() {
+        return route2ndSchedule;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setRoute2ndSchedule(String route2ndSchedule) {
+        this.route2ndSchedule = route2ndSchedule;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getDriverName() {
+        return driverName;
     }
 
-    public String getFirstSurname() {
-        return firstSurname;
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
-    public void setFirstSurname(String firstSurname) {
-        this.firstSurname = firstSurname;
+    public String getDriverLastname() {
+        return driverLastname;
     }
 
-    public String getSecondSurname() {
-        return secondSurname;
+    public void setDriverLastname(String driverLastname) {
+        this.driverLastname = driverLastname;
     }
 
-    public void setSecondSurname(String secondSurname) {
-        this.secondSurname = secondSurname;
+    public String getBusPlate() {
+        return busPlate;
     }
 
-    public String getPlate() {
-        return plate;
-    }
-
-    public void setPlate(String plate) {
-        this.plate = plate;
+    public void setBusPlate(String busPlate) {
+        this.busPlate = busPlate;
     }
 }

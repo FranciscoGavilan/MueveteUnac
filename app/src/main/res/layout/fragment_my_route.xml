@@ -6,9 +6,16 @@
     tools:context=".viewDriver.view.viewMyRoute.MyRouteFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/btnSubirDocumento"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@drawable/style_button"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:text="Subir documento a Firebase"
+        android:onClick="onClick"
+        />
 
 </FrameLayout>

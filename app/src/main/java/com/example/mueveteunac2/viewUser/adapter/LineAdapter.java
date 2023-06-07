@@ -19,7 +19,7 @@ import java.util.List;
 public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> implements View.OnClickListener{
     LayoutInflater inflater;
     List<Line> lineList;
-    private View.OnClickListener listener;
+    View.OnClickListener listener;
 
     public void setLineList(Context context, List<Line> lineList){
         this.inflater=LayoutInflater.from(context);
@@ -35,31 +35,29 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String idLine=lineList.get(position).getIdLine();
-        String nameLine=lineList.get(position).getNameLine();
-        String symbol=lineList.get(position).getSymbol();
-        String firstStop=lineList.get(position).getFirstStop();
-        String lastStop=lineList.get(position).getLastStop();
-        String mDepSchedule=lineList.get(position).getfDepSchedule();
-        String aDepSchedule=lineList.get(position).getsDepSchedule();
-        String firstName=lineList.get(position).getFirstName();
-        String firstSurname=lineList.get(position).getFirstSurname();
-        String secondSurname=lineList.get(position).getSecondSurname();
-        String plate=lineList.get(position).getPlate();
-        holder.ruta.setText("RUTA - "+nameLine.toUpperCase());
-        holder.simbolo.setText(symbol);
-        holder.paraderos.setText((firstStop+" - "+lastStop).toUpperCase());
-        holder.salida_m.setText("Primera Salida - "+mDepSchedule);
-        holder.salida_t.setText("Segunda Salida - "+aDepSchedule);
-        holder.chofer.setText("Chofer: "+firstName+" "+firstSurname+" "+secondSurname);
-        holder.placa.setText("Placa: "+plate);
+        String lineId=lineList.get(position).getLineId();
+        String lineName=lineList.get(position).getLineName();
+        String lineSymbol=lineList.get(position).getLineSymbol();
+        String stopFirst=lineList.get(position).getStopFirst();
+        String stopLast=lineList.get(position).getStopLast();
+        String route1stSchedule=lineList.get(position).getRoute1stSchedule();
+        String route2ndSchedule=lineList.get(position).getRoute2ndSchedule();
+        String driverName=lineList.get(position).getDriverName();
+        String driverLastname=lineList.get(position).getDriverLastname();
+        String busPlate=lineList.get(position).getBusPlate();
+        holder.ruta.setText("RUTA - "+lineName.toUpperCase());
+        holder.simbolo.setText(lineSymbol);
+        holder.paraderos.setText((stopFirst+" - "+stopLast).toUpperCase());
+        holder.salida_m.setText("Primera Salida - "+route1stSchedule);
+        holder.salida_t.setText("Segunda Salida - "+route2ndSchedule);
+        holder.chofer.setText("Chofer: "+driverName+" "+driverLastname);
+        holder.placa.setText("Placa: "+busPlate);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
                 Intent intent = new Intent(holder.itemView.getContext(), RouteActivity.class);
-                intent.putExtra("idLine",idLine);
+                intent.putExtra("idLine",lineId);
                 intent.putExtra("shift","Mañana");
                 holder.itemView.getContext().startActivity(intent);
 

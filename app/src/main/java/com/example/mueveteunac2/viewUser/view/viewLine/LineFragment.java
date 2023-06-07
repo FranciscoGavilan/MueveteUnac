@@ -38,7 +38,6 @@ public class LineFragment extends Fragment {
 
         lineAdapter=new LineAdapter();
         recyclerViewLine.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewLine.setAdapter(lineAdapter);
 
         return view;
     }
@@ -53,7 +52,7 @@ public class LineFragment extends Fragment {
             @Override
             public void onChanged(List<Line> lines) {
                 lineAdapter.setLineList(getContext(),lines);
-                lineAdapter.notifyDataSetChanged();
+                recyclerViewLine.setAdapter(lineAdapter);
             }
         });
     }

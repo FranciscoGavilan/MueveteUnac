@@ -29,7 +29,7 @@ public class RouteActivity extends AppCompatActivity implements RouteMapFragment
 
     private CircleImageView image;
     private ImageButton back;
-    private String idLine,shift;
+    private String lineId,turnId;
     private float tam1,tam2;
 
     @Override
@@ -58,18 +58,22 @@ public class RouteActivity extends AppCompatActivity implements RouteMapFragment
             startActivity(intent);
         });
 
-        idLine= getIntent().getExtras().getString("idLine");
-        shift= getIntent().getExtras().getString("shift");
+        lineId= getIntent().getExtras().getString("idLine");
+        turnId= getIntent().getExtras().getString("shift");
+
+        if(turnId.equals("TM")){
+            turnId="Mañana";
+        }
 
         FirebaseFirestore db=FirebaseFirestore.getInstance();
 
-        Query query=db.collection("Route").whereEqualTo("shift",shift);
+        Query query=db.collection("Route").whereEqualTo("shift",turnId);
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     db.collection("Route").document(document.getId()).collection("Line").
-                            whereEqualTo("idLine",idLine).get().addOnCompleteListener(task2 -> {
+                            whereEqualTo("idLine",lineId).get().addOnCompleteListener(task2 -> {
                                 if (task2.isSuccessful()) {
                                     for (QueryDocumentSnapshot document2 : task2.getResult()){
                                         if(document.get("idRoute")!=null){
@@ -83,8 +87,8 @@ public class RouteActivity extends AppCompatActivity implements RouteMapFragment
 
                                             Bundle route=new Bundle();
                                             route.putString("documentRoute",document.getId());
-                                            route.putString("shift",shift);
-                                            route.putString("idLine",idLine);
+                                            route.putString("shift",turnId);
+                                            route.putString("idLine",lineId);
                                             route.putString("nameLine",document2.getString("nameLine"));
 
                                             Fragment fragmentparadero=new RouteInfoFragment();

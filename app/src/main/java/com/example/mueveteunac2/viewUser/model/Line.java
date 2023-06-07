@@ -7,7 +7,9 @@ public class Line {
     private String stopFirst;
     private String stopLast;
     private String route1stSchedule;
+    private String route1stTurnId;
     private String route2ndSchedule;
+    private String route2ndTurnId;
     private String driverName;
     private String driverLastname;
     private String busPlate;
@@ -18,15 +20,18 @@ public class Line {
     }
 
     public Line(String lineId, String lineName, String lineSymbol, String stopFirst,
-                String stopLast, String route1stSchedule, String route2ndSchedule,
-                String driverName, String driverLastname, String busPlate) {
+                String stopLast, String route1stSchedule, String route1stTurnId,
+                String route2ndSchedule, String route2ndTurnId, String driverName,
+                String driverLastname, String busPlate) {
         this.lineId = lineId;
         this.lineName = lineName;
         this.lineSymbol = lineSymbol;
         this.stopFirst = stopFirst;
         this.stopLast = stopLast;
         this.route1stSchedule = route1stSchedule;
+        this.route1stTurnId = route1stTurnId;
         this.route2ndSchedule = route2ndSchedule;
+        this.route2ndTurnId = route2ndTurnId;
         this.driverName = driverName;
         this.driverLastname = driverLastname;
         this.busPlate = busPlate;
@@ -80,12 +85,28 @@ public class Line {
         this.route1stSchedule = route1stSchedule;
     }
 
+    public String getRoute1stTurnId() {
+        return route1stTurnId;
+    }
+
+    public void setRoute1stTurnId(String route1stTurnId) {
+        this.route1stTurnId = route1stTurnId;
+    }
+
     public String getRoute2ndSchedule() {
         return route2ndSchedule;
     }
 
     public void setRoute2ndSchedule(String route2ndSchedule) {
         this.route2ndSchedule = route2ndSchedule;
+    }
+
+    public String getRoute2ndTurnId() {
+        return route2ndTurnId;
+    }
+
+    public void setRoute2ndTurnId(String route2ndTurnId) {
+        this.route2ndTurnId = route2ndTurnId;
     }
 
     public String getDriverName() {

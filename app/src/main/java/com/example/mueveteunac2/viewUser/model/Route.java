@@ -1,33 +1,29 @@
 package com.example.mueveteunac2.viewUser.model;
-import com.google.firebase.firestore.GeoPoint;
+import java.util.List;
 
 public class Route {
     private String routeId;
     private String routeSchedule;
     private String tunId;
     private String turn;
-    private String stopId;
-    private String stopName;
-    private GeoPoint stopPosition;
-    private Integer stopOrder;
+    private List<Stop> stopList;
     private String lineId;
+    private String lineName;
 
     // empty constructor for firebase
     public Route() {
         // Constructor sin argumentos
     }
 
-    public Route(String routeId, String routeSchedule, String tunId, String turn, String stopId,
-                 String stopName, GeoPoint stopPosition, Integer stopOrder, String lineId) {
+    public Route(String routeId, String routeSchedule, String tunId, String turn,
+                 List<Stop> stopList, String lineId, String lineName) {
         this.routeId = routeId;
         this.routeSchedule = routeSchedule;
         this.tunId = tunId;
         this.turn = turn;
-        this.stopId = stopId;
-        this.stopName = stopName;
-        this.stopPosition = stopPosition;
-        this.stopOrder = stopOrder;
+        this.stopList = stopList;
         this.lineId = lineId;
+        this.lineName = lineName;
     }
 
     public String getRouteId() {
@@ -62,36 +58,12 @@ public class Route {
         this.turn = turn;
     }
 
-    public String getStopId() {
-        return stopId;
+    public List<Stop> getStopList() {
+        return stopList;
     }
 
-    public void setStopId(String stopId) {
-        this.stopId = stopId;
-    }
-
-    public String getStopName() {
-        return stopName;
-    }
-
-    public void setStopName(String stopName) {
-        this.stopName = stopName;
-    }
-
-    public GeoPoint getStopPosition() {
-        return stopPosition;
-    }
-
-    public void setStopPosition(GeoPoint stopPosition) {
-        this.stopPosition = stopPosition;
-    }
-
-    public Integer getStopOrder() {
-        return stopOrder;
-    }
-
-    public void setStopOrder(Integer stopOrder) {
-        this.stopOrder = stopOrder;
+    public void setStopList(List<Stop> stopList) {
+        this.stopList = stopList;
     }
 
     public String getLineId() {
@@ -100,5 +72,13 @@ public class Route {
 
     public void setLineId(String lineId) {
         this.lineId = lineId;
+    }
+
+    public String getLineName() {
+        return lineName;
+    }
+
+    public void setLineName(String lineName) {
+        this.lineName = lineName;
     }
 }

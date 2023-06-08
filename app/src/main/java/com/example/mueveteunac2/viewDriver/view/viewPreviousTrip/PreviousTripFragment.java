@@ -18,7 +18,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -81,33 +83,123 @@ public class PreviousTripFragment extends Fragment {
         btnSubirRuta=view.findViewById(R.id.btnSubirRuta);
 
         btnSubirRuta.setOnClickListener(v -> {
-            /*Map<String, Object> data = new HashMap<>();
-            data.put("routeId", "R012");
-            data.put("routeSchedule", "22:20");
-            data.put("tunId", "TN");
-            data.put("turn", "Noche");
-            data.put("stopId", "S0531");
-            data.put("stopName", "Paradero Lima Cargo");
-            data.put("stopPosition", new GeoPoint(-12.02863,-77.10254));
-            data.put("stopOrder", 11);
-            data.put("lineId", "L006");
 
+            /*List<Map<String, Object>> datos = new ArrayList<>();
 
-            db.collection("Route")
-                    .add(data)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Toast.makeText(getContext(),"Se agrego correctamente",Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(),"No se agrego el documento",Toast.LENGTH_SHORT).show();
-                        }
-                    });*/
-        });
+            Map<String, Object> documento1 = new HashMap<>();
+
+            documento1.put("stopId", "S9999");
+            documento1.put("stopName", "UNAC");
+            documento1.put("stopPosition", new GeoPoint(-12.06215,-77.11726));
+            documento1.put("stopOrder", 1);
+
+            Map<String, Object> documento2 = new HashMap<>();
+
+            documento2.put("stopId", "S0540");
+            documento2.put("stopName", "Av. República de Venezuela");
+            documento2.put("stopPosition", new GeoPoint(-12.06527,-77.11823));
+            documento2.put("stopOrder", 2);
+
+            Map<String, Object> documento3 = new HashMap<>();
+
+            documento3.put("stopId", "S0539");
+            documento3.put("stopName", "Paradero Corredor Verde Faucett");
+            documento3.put("stopPosition", new GeoPoint(-12.06270,-77.09758));
+            documento3.put("stopOrder", 3);
+
+            Map<String, Object> documento4 = new HashMap<>();
+
+            documento4.put("stopId", "S0538");
+            documento4.put("stopName", "Av. Óscar R. Benavides");
+            documento4.put("stopPosition", new GeoPoint(-12.05370,-77.09787));
+            documento4.put("stopOrder", 4);
+
+            Map<String, Object> documento5 = new HashMap<>();
+
+            documento5.put("stopId", "S0537");
+            documento5.put("stopName", "Av. Argentina");
+            documento5.put("stopPosition", new GeoPoint(-12.04859,-77.09826));
+            documento5.put("stopOrder", 5);
+
+            Map<String, Object> documento6 = new HashMap<>();
+
+            documento6.put("stopId", "S0536");
+            documento6.put("stopName", "Paradero Hospital San Jose");
+            documento6.put("stopPosition", new GeoPoint(-12.04364,-77.09872));
+            documento6.put("stopOrder", 6);
+
+            Map<String, Object> documento7 = new HashMap<>();
+
+            documento7.put("stopId", "S0535");
+            documento7.put("stopName", "Av. Morales Duárez");
+            documento7.put("stopPosition", new GeoPoint(-12.04053,-77.09899));
+            documento7.put("stopOrder", 7);
+
+            Map<String, Object> documento8 = new HashMap<>();
+
+            documento8.put("stopId", "S0534");
+            documento8.put("stopName", "Paradero Setaca");
+            documento8.put("stopPosition", new GeoPoint(-12.03762,-77.09917));
+            documento8.put("stopOrder", 8);
+
+            Map<String, Object> documento9 = new HashMap<>();
+
+            documento9.put("stopId", "S0533");
+            documento9.put("stopName", "Av. Quilca");
+            documento9.put("stopPosition", new GeoPoint(-12.03673,-77.09914));
+            documento9.put("stopOrder", 9);
+
+            Map<String, Object> documento10 = new HashMap<>();
+
+            documento10.put("stopId", "S0532");
+            documento10.put("stopName", "Paradero Monark");
+            documento10.put("stopPosition", new GeoPoint(-12.03319,-77.10026));
+            documento10.put("stopOrder", 10);
+
+            Map<String, Object> documento11 = new HashMap<>();
+
+            documento11.put("stopId", "S0531");
+            documento11.put("stopName", "Paradero Lima Cargo");
+            documento11.put("stopPosition", new GeoPoint(-12.02863,-77.10254));
+            documento11.put("stopOrder", 11);
+
+            Map<String, Object> documento12 = new HashMap<>();
+
+            documento12.put("stopId", "S0530");
+            documento12.put("stopName", "Aeropuerto Jorge Chávez");
+            documento12.put("stopPosition", new GeoPoint(-12.02358,-77.10522));
+            documento12.put("stopOrder", 12);
+
+            datos.add(documento1);
+            datos.add(documento2);
+            datos.add(documento3);
+            datos.add(documento4);
+            datos.add(documento5);
+            datos.add(documento6);
+            datos.add(documento7);
+            datos.add(documento8);
+            datos.add(documento9);
+            datos.add(documento10);
+            datos.add(documento11);
+            datos.add(documento12);
+
+            for (Map<String, Object> data : datos) {
+                db.collection("Route").document("MpMOexKMHTDd9v3lDZ4o").collection("Stop")
+                        .add(data)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(getContext(), "Se agrego correctamente", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), "No se agrego el documento", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }*/
+            });
         return view;
     }
 }

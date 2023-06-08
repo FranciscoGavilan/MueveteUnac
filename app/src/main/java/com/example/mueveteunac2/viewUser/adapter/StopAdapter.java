@@ -14,13 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mueveteunac2.viewUser.model.Stop;
 import com.example.mueveteunac2.viewUser.view.viewLine.viewRoute.viewStop.StopActivity;
 import com.example.mueveteunac2.R;
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
 
 public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> implements View.OnClickListener{
     LayoutInflater inflater;
     ArrayList<Stop> model;
 
-    private View.OnClickListener listener;
+    View.OnClickListener listener;
     public StopAdapter(Context context, ArrayList<Stop> model){
         this.inflater=LayoutInflater.from(context);
         this.model=model;
@@ -39,20 +41,18 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(@NonNull StopAdapter.ViewHolder holder, int position) {
-        final Stop item=model.get(position);
-        String idLine=model.get(position).getIdLine();
-        String idStop=model.get(position).getIdStop();
-        String nameStop=model.get(position).getNameStop();
-        String shift=model.get(position).getShift();
-        String nameLine=model.get(position).getNameLine();
-        holder.nombre_paradero.setText(nameStop);
+        String stopId=model.get(position).getStopId();
+        String stopName=model.get(position).getStopName();
+        GeoPoint stopPosition=model.get(position).getStopPosition();
+        Integer stopOrder=model.get(position).getStopOrder();
+        holder.nombre_paradero.setText(stopName);
         holder.btnObservarparadero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
                 Intent intent = new Intent(holder.itemView.getContext(), StopActivity.class);
-                intent.putExtra("Stop",item);
+                intent.putExtra("stopId",stopId);
                 holder.itemView.getContext().startActivity(intent);
 
             }

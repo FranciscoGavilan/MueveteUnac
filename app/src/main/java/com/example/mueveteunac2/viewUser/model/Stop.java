@@ -1,59 +1,53 @@
 package com.example.mueveteunac2.viewUser.model;
+import com.google.firebase.firestore.GeoPoint;
 
-import java.io.Serializable;
+public class Stop {
+    private String stopId;
+    private String stopName;
+    private GeoPoint stopPosition;
+    private Integer stopOrder;
 
-public class Stop implements Serializable {
-    private String idStop;
-    private String nameStop;
-    private String shift;
-    private String idLine;
-    private String nameLine;
-
-    public Stop(String idStop, String nameStop, String shift, String idLine, String nameLine) {
-        this.idStop = idStop;
-        this.nameStop = nameStop;
-        this.shift = shift;
-        this.idLine = idLine;
-        this.nameLine = nameLine;
+    // empty constructor for firebase
+    public Stop() {
+        // Constructor sin argumentos
     }
 
-    public String getIdStop() {
-        return idStop;
+    public Stop(String stopId, String stopName, GeoPoint stopPosition, Integer stopOrder) {
+        this.stopId = stopId;
+        this.stopName = stopName;
+        this.stopPosition = stopPosition;
+        this.stopOrder = stopOrder;
     }
 
-    public void setIdStop(String idStop) {
-        this.idStop = idStop;
+    public String getStopId() {
+        return stopId;
     }
 
-    public String getNameStop() {
-        return nameStop;
+    public void setStopId(String stopId) {
+        this.stopId = stopId;
     }
 
-    public void setNameStop(String nameStop) {
-        this.nameStop = nameStop;
+    public String getStopName() {
+        return stopName;
     }
 
-    public String getShift() {
-        return shift;
+    public void setStopName(String stopName) {
+        this.stopName = stopName;
     }
 
-    public void setShift(String shift) {
-        this.shift = shift;
+    public GeoPoint getStopPosition() {
+        return stopPosition;
     }
 
-    public String getIdLine() {
-        return idLine;
+    public void setStopPosition(GeoPoint stopPosition) {
+        this.stopPosition = stopPosition;
     }
 
-    public void setIdLine(String idLine) {
-        this.idLine = idLine;
+    public Integer getStopOrder() {
+        return stopOrder;
     }
 
-    public String getNameLine() {
-        return nameLine;
-    }
-
-    public void setNameLine(String nameLine) {
-        this.nameLine = nameLine;
+    public void setStopOrder(Integer stopOrder) {
+        this.stopOrder = stopOrder;
     }
 }

@@ -2,13 +2,24 @@ package com.example.mueveteunac2.viewDriver.view.viewPreviousTrip;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.mueveteunac2.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +27,8 @@ import com.example.mueveteunac2.R;
  * create an instance of this fragment.
  */
 public class PreviousTripFragment extends Fragment {
+
+    Button btnSubirRuta;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +74,40 @@ public class PreviousTripFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_previous_trip, container, false);
+        View view=inflater.inflate(R.layout.fragment_previous_trip, container, false);
+
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+
+        btnSubirRuta=view.findViewById(R.id.btnSubirRuta);
+
+        btnSubirRuta.setOnClickListener(v -> {
+            /*Map<String, Object> data = new HashMap<>();
+            data.put("routeId", "R012");
+            data.put("routeSchedule", "22:20");
+            data.put("tunId", "TN");
+            data.put("turn", "Noche");
+            data.put("stopId", "S0531");
+            data.put("stopName", "Paradero Lima Cargo");
+            data.put("stopPosition", new GeoPoint(-12.02863,-77.10254));
+            data.put("stopOrder", 11);
+            data.put("lineId", "L006");
+
+
+            db.collection("Route")
+                    .add(data)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(getContext(),"Se agrego correctamente",Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(),"No se agrego el documento",Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
+        });
+        return view;
     }
 }

@@ -58,50 +58,25 @@ public class RouteActivity extends AppCompatActivity implements RouteMapFragment
             startActivity(intent);
         });
 
-        lineId= getIntent().getExtras().getString("idLine");
-        turnId= getIntent().getExtras().getString("shift");
+        lineId= getIntent().getExtras().getString("lineId");
+        turnId= getIntent().getExtras().getString("turnId");
 
-        if(turnId.equals("TM")){
-            turnId="Mañana";
-        }
+        Bundle documentRoute=new Bundle();
+        documentRoute.putString("documentRoute",document.getId());
 
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        Fragment fragmento=new RouteMapFragment();
+        fragmento.setArguments(documentRoute);
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragmento).commit();
 
-        Query query=db.collection("Route").whereEqualTo("shift",turnId);
+        Bundle route=new Bundle();
+        route.putString("documentRoute",document.getId());
+        route.putString("shift",turnId);
+        route.putString("idLine",lineId);
+        route.putString("nameLine",document2.getString("nameLine"));
 
-        query.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    db.collection("Route").document(document.getId()).collection("Line").
-                            whereEqualTo("idLine",lineId).get().addOnCompleteListener(task2 -> {
-                                if (task2.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document2 : task2.getResult()){
-                                        if(document.get("idRoute")!=null){
-
-                                            Bundle documentRoute=new Bundle();
-                                            documentRoute.putString("documentRoute",document.getId());
-
-                                            Fragment fragmento=new RouteMapFragment();
-                                            fragmento.setArguments(documentRoute);
-                                            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragmento).commit();
-
-                                            Bundle route=new Bundle();
-                                            route.putString("documentRoute",document.getId());
-                                            route.putString("shift",turnId);
-                                            route.putString("idLine",lineId);
-                                            route.putString("nameLine",document2.getString("nameLine"));
-
-                                            Fragment fragmentparadero=new RouteInfoFragment();
-                                            fragmentparadero.setArguments(route);
-                                            getSupportFragmentManager().beginTransaction().replace(R.id.mostrarparaderos,fragmentparadero).commit();
-                                        }
-                                    }
-                                }
-
-                            });
-                }
-            }
-        });
+        Fragment fragmentparadero=new RouteInfoFragment();
+        fragmentparadero.setArguments(route);
+        getSupportFragmentManager().beginTransaction().replace(R.id.mostrarparaderos,fragmentparadero).commit();
     }
 
     @Override

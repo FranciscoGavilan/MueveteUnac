@@ -1,6 +1,5 @@
 package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,26 +10,33 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.bumptech.glide.Glide;
 import com.example.mueveteunac2.LoginActivity;
 import com.example.mueveteunac2.R;
+import com.example.mueveteunac2.viewUser.model.Route;
 import com.example.mueveteunac2.viewUser.view.UserActivity;
+import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RouteActivity extends AppCompatActivity implements RouteMapFragment.OnFragmentInteractionListener,RouteInfoFragment.VisualizarparaderosFragment{
 
     private CircleImageView image;
     private ImageButton back;
-    private String lineId,turnId;
+    private String lineId,firstTurnId,secondTurnId;
     private float tam1,tam2;
+    private RouteViewModel routeViewModel;
+
+    private TextView twRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,24 +64,30 @@ public class RouteActivity extends AppCompatActivity implements RouteMapFragment
             startActivity(intent);
         });
 
-        lineId= getIntent().getExtras().getString("lineId");
-        turnId= getIntent().getExtras().getString("turnId");
+        twRoute=findViewById(R.id.twRoute);
 
-        Bundle documentRoute=new Bundle();
-        documentRoute.putString("documentRoute",document.getId());
+        lineId= getIntent().getExtras().getString("lineId");
+        firstTurnId= getIntent().getExtras().getString("firstTurnId");
+        secondTurnId= getIntent().getExtras().getString("secondTurnId");
+
+
+        routeViewModel = new ViewModelProvider(this).get(RouteViewModel.class);
+        routeViewModel.getRouteFromFirestore(lineId,firstTurnId);
+        routeViewModel.getLiveDatafromFireStore().observe(this, new Observer<Route>() {
+            @Override
+            public void onChanged(Route route) {
+                String routeSelected= route.getTurn();
+                twRoute.setText("Turno "+routeSelected);
+            }
+        });
 
         Fragment fragmento=new RouteMapFragment();
-        fragmento.setArguments(documentRoute);
+        Bundle turns=new Bundle();
+        turns.putString("firstTurnId",firstTurnId);
+        turns.putString("secondTurnId",secondTurnId);
         getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,fragmento).commit();
 
-        Bundle route=new Bundle();
-        route.putString("documentRoute",document.getId());
-        route.putString("shift",turnId);
-        route.putString("idLine",lineId);
-        route.putString("nameLine",document2.getString("nameLine"));
-
         Fragment fragmentparadero=new RouteInfoFragment();
-        fragmentparadero.setArguments(route);
         getSupportFragmentManager().beginTransaction().replace(R.id.mostrarparaderos,fragmentparadero).commit();
     }
 
@@ -106,8 +118,8 @@ public class RouteActivity extends AppCompatActivity implements RouteMapFragment
         tam1= ((LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea1).getLayoutParams()).weight;
         tam2=((LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea2).getLayoutParams()).weight;
 
-        float t1= (float) 0.7;
-        float t2=(float) 0.3;
+        float t1= (float) 0.8;
+        float t2=(float) 0.2;
         LinearLayout.LayoutParams p1= (LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea1).getLayoutParams();
         LinearLayout.LayoutParams p2= (LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea2).getLayoutParams();
 
@@ -116,8 +128,8 @@ public class RouteActivity extends AppCompatActivity implements RouteMapFragment
             p2.weight = (float) 1.0;
 
         }else{
-            p1.weight = (float) 0.7;
-            p2.weight = (float) 0.3;
+            p1.weight = (float) 0.8;
+            p2.weight = (float) 0.2;
 
         }
         RouteActivity.this.findViewById(R.id.linea1).setLayoutParams(p1);

@@ -67,8 +67,9 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> im
             public void onClick(View view) {
 
                 Intent intent = new Intent(holder.itemView.getContext(), RouteActivity.class);
-                intent.putExtra("idLine",lineId);
-                intent.putExtra("shift",route1stTurnId);
+                intent.putExtra("lineId",lineId);
+                intent.putExtra("firstTurnId",route1stTurnId);
+                intent.putExtra("secondTurnId",route2ndTurnId);
                 holder.itemView.getContext().startActivity(intent);
 
             }

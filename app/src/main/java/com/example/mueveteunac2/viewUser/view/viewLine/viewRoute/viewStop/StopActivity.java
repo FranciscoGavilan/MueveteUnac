@@ -47,7 +47,7 @@ public class StopActivity extends AppCompatActivity implements StopMapFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop);
 
-        item= (Stop) getIntent().getExtras().getSerializable("Stop");
+        /*item= (Stop) getIntent().getExtras().getSerializable("Stop");
         idLine=String.valueOf(item.getIdLine());
         nameLine= String.valueOf(item.getNameLine());
         shift= String.valueOf(item.getShift());

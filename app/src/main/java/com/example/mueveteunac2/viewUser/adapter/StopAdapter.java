@@ -17,15 +17,16 @@ import com.example.mueveteunac2.R;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> implements View.OnClickListener{
     LayoutInflater inflater;
-    ArrayList<Stop> model;
+    List<Stop> stopList;
 
     View.OnClickListener listener;
-    public StopAdapter(Context context, ArrayList<Stop> model){
+    public void setStopList(Context context, List<Stop> stopList){
         this.inflater=LayoutInflater.from(context);
-        this.model=model;
+        this.stopList=stopList;
     }
     @NonNull
     @Override
@@ -35,18 +36,18 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> im
         return new StopAdapter.ViewHolder(view);
     }
 
-    public void setOnclickListener(View.OnClickListener listener){
-        this.listener=listener;
-    }
-
     @Override
     public void onBindViewHolder(@NonNull StopAdapter.ViewHolder holder, int position) {
-        String stopId=model.get(position).getStopId();
-        String stopName=model.get(position).getStopName();
-        GeoPoint stopPosition=model.get(position).getStopPosition();
-        Integer stopOrder=model.get(position).getStopOrder();
+        String stopId=stopList.get(position).getStopId();
+        String stopName=stopList.get(position).getStopName();
+        Integer stopOrder=stopList.get(position).getStopOrder();
         holder.nombre_paradero.setText(stopName);
-        holder.btnObservarparadero.setOnClickListener(new View.OnClickListener() {
+        if(stopOrder==1){
+            holder.vwUpStop.setVisibility(View.GONE);
+        }else if(stopOrder==stopList.size()){
+            holder.vwDownStop.setVisibility(View.GONE);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -61,7 +62,11 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> im
 
     @Override
     public int getItemCount() {
-        return model.size();
+        if (stopList == null) {
+            return 0;
+        } else {
+            return stopList.size();
+        }
     }
 
     @Override
@@ -73,13 +78,16 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> im
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView nombre_paradero;
-        ImageButton btnObservarparadero;
+        /*ImageButton btnObservarparadero;*/
+        View vwUpStop,vwDownStop;
 
         Context context;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre_paradero=itemView.findViewById(R.id.whereabouts);
-            btnObservarparadero=itemView.findViewById(R.id.btnObservarparadero);
+            vwUpStop=itemView.findViewById(R.id.vwUpStop);
+            vwDownStop=itemView.findViewById(R.id.vwDownStop);
+            /*btnObservarparadero=itemView.findViewById(R.id.btnObservarparadero);*/
 
         }
 

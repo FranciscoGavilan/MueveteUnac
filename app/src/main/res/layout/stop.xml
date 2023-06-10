@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|center_horizontal"
-    android:background="#D6E8F8"
     >
 
     <LinearLayout
@@ -14,29 +14,61 @@
         <LinearLayout
 
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="0.6"
+            android:layout_height="50dp"
+            android:layout_weight="0.7"
             android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
             <LinearLayout
 
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="0.3"
+                android:layout_height="50dp"
+                android:layout_weight="0.2"
                 android:gravity="center_horizontal|center_vertical">
-            <TextView
-                android:id="@+id/circulo"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:background="@drawable/style_circulo"
-                />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <View
+                        android:id="@+id/vwUpStop"
+                        android:layout_width="4dp"
+                        android:layout_height="0dp"
+                        android:background="#656565"
+                        app:layout_constraintBottom_toTopOf="@+id/circulo"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <View
+                        android:id="@+id/circulo"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/style_circulo"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/vwDownStop"
+                        android:layout_width="4dp"
+                        android:layout_height="0dp"
+                        android:background="#656565"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/circulo"
+                        app:layout_constraintVertical_bias="0.0" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
             <LinearLayout
 
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="0.7"
+                android:layout_height="50dp"
+                android:layout_weight="0.8"
                 android:gravity="center_horizontal|center_vertical">
             <TextView
                 android:id="@+id/whereabouts"
@@ -51,17 +83,23 @@
         <LinearLayout
 
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="0.4"
+            android:layout_height="50dp"
+            android:layout_weight="0.3"
             android:gravity="center_horizontal|center_vertical">
 
-            <ImageButton
+            <!--<Button
                 android:id="@+id/btnObservarparadero"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Ubicar en tiempo real"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:textAllCaps="false"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:background="@drawable/baseline_directions_24"
-                android:onClick="onClick" />
+                android:background="@drawable/style_button"
+                android:onClick="onClick"
+                android:drawableLeft="@drawable/baseline_departure_board_16"
+                android:drawablePadding="5dp"/>-->
         </LinearLayout>
 
     </LinearLayout>

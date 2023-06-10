@@ -44,6 +44,7 @@
                 android:layout_weight="0.7">
 
                 <TextView
+                    android:id="@+id/twRoute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MueveteUnac"
@@ -79,7 +80,7 @@
 
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_weight="0.8"
         android:id="@+id/linea1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,7 +93,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.3"
+        android:layout_weight="0.2"
         android:id="@+id/linea2">
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -16,7 +16,6 @@ import java.util.List;
 
 public class RouteRepository {
     RouteRepository.OnFireStoreDataAdded fireStoreDataAdded;
-    Route route=new Route();
     List<Stop> stopList=new ArrayList<>();
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     Query routeRef = firestore.collection("Route");
@@ -38,10 +37,10 @@ public class RouteRepository {
                     fireStoreDataAdded.OnError(e);
                 } else {
                     for (DocumentSnapshot doc : value.getDocuments()) {
-                        route=doc.toObject(Route.class);
+                        Route route=doc.toObject(Route.class);
 
                         firestore.collection("Route").
-                                document("MpMOexKMHTDd9v3lDZ4o").
+                                document(doc.getId()).
                                 collection("Stop").
                                 orderBy("stopOrder", Query.Direction.ASCENDING).
                                 addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -58,10 +57,10 @@ public class RouteRepository {
                                                 stopList.add(stop);
                                             }
                                             route.setStopList(stopList);
+                                            fireStoreDataAdded.routeDataAdded(route);
                                         }
                                     }
                                 });
-                        fireStoreDataAdded.routeDataAdded(route);
                     }
                 }
             }

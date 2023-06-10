@@ -16,4 +16,9 @@
     <style name="Theme.MueveteUnac2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MueveteUnac2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-</resources>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">
+            @drawable/splash_background
+        </item>
+    </style>
+ </resources>

@@ -10,40 +10,36 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.example.mueveteunac2.R;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RouteInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.mueveteunac2.R;
+import com.example.mueveteunac2.viewUser.model.Line;
+import com.example.mueveteunac2.viewUser.model.Route;
+import com.example.mueveteunac2.viewUser.view.viewLine.viewRoute.viewStop.StopInfoFragment;
+import com.example.mueveteunac2.viewUser.viewModel.LineViewModel;
+import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
+
+import java.util.List;
+
 public class RouteInfoFragment extends Fragment implements RouteStopFragment.OnFragmentInteractionListener{
 
     ImageButton btnSubir;
     Button btnCambiarSentido;
     private TextView edtverruta;
     private boolean boton_pulsado=true;
+    private RouteViewModel routeViewModel;
 
     VisualizarparaderosFragment visualizarparaderos;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "documentRoute";
-    private static final String ARG_PARAM2 = "shift";
-    private static final String ARG_PARAM3 = "idLine";
-    private static final String ARG_PARAM4 = "nameLine";
-
-
+    private static final String ARG_PARAM1 = "firstTurnId";
+    private static final String ARG_PARAM2 = "secondTurnId";
 
 
     // TODO: Rename and change types of parameters
-    private String documentRoute;
-    private String shift;
-    private String idLine;
-    private String nameLine;
-
-
+    private String firstTurnId,secondTurnId;
 
     public RouteInfoFragment() {
         // Required empty public constructor
@@ -54,14 +50,11 @@ public class RouteInfoFragment extends Fragment implements RouteStopFragment.OnF
      * this fragment using the provided parameters.
      */
     // TODO: Rename and change types and number of parameters
-    public static RouteInfoFragment newInstance(String documentRoute,String shift,String idLine,String nameLine) {
-        RouteInfoFragment fragment = new RouteInfoFragment();
+    public static StopInfoFragment newInstance(String firstTurnId, String secondTurnId) {
+        StopInfoFragment fragment = new StopInfoFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, documentRoute);
-        args.putString(ARG_PARAM2, shift);
-        args.putString(ARG_PARAM3, idLine);
-        args.putString(ARG_PARAM4, nameLine);
-
+        args.putString(ARG_PARAM1, firstTurnId);
+        args.putString(ARG_PARAM2, secondTurnId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,11 +63,8 @@ public class RouteInfoFragment extends Fragment implements RouteStopFragment.OnF
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            documentRoute = getArguments().getString(ARG_PARAM1);
-            shift = getArguments().getString(ARG_PARAM2);
-            idLine = getArguments().getString(ARG_PARAM3);
-            nameLine = getArguments().getString(ARG_PARAM4);
-
+            firstTurnId = getArguments().getString(ARG_PARAM1);
+            secondTurnId = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -85,53 +75,54 @@ public class RouteInfoFragment extends Fragment implements RouteStopFragment.OnF
         View view=inflater.inflate(R.layout.fragment_route_info, container, false);
 
         edtverruta= view.findViewById(R.id.edtverruta);
-        cargar_linea();
 
         btnCambiarSentido =view.findViewById(R.id.btnCambiarSentido);
-        btnCambiarSentido.setOnClickListener(v2 -> {
-            if(shift.equals("Mañana")){
-               shift="Tarde";
-            }else  if (shift.equals("Tarde")){
-                shift="Mañana";
-            }
-            Intent intent = new Intent(getActivity().getApplicationContext(), RouteActivity.class);
-            intent.putExtra("idLine",idLine);
-            intent.putExtra("shift",shift);
-            getActivity().getApplicationContext().startActivity(intent);
-        });
 
         btnSubir = view.findViewById(R.id.btnSubir);
         btnSubir.setOnClickListener(v -> {
             Fragment paraderosFragment=new RouteStopFragment();
             if(boton_pulsado){
                 boton_pulsado=false;
-                btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_down_30);
-                Bundle linea=new Bundle();
-                linea.putString("documentRoute",documentRoute);
-                linea.putString("idLine",idLine);
-                linea.putString("nameLine",nameLine);
-                linea.putString("shift",shift);
-                paraderosFragment.setArguments(linea);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.todosparaderos,paraderosFragment).commit();
+                /*btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_down_30);*/
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.todosparaderos,paraderosFragment).commit();
             }else{
                 boton_pulsado=true;
-                btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_up_30);
+                /*btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_up_30);*/
                 getActivity().getSupportFragmentManager().beginTransaction().
-                        remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.todosparaderos)).commit();
+                        remove(getActivity().getSupportFragmentManager().
+                                findFragmentById(R.id.todosparaderos)).commit();
             }
             visualizarparaderos.pulsarvista();
         });
         return view;
     }
 
-    private void cargar_linea() {
-        String idTurno="";
-        if(shift.equals("Mañana")){
-            idTurno="TM";
-        }else if(shift.equals("Tarde")){
-            idTurno="TT";
-        }
-        edtverruta.setText("RUTA - "+nameLine.toUpperCase()+" "+idTurno);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        routeViewModel = new ViewModelProvider(requireActivity()).get(RouteViewModel.class);
+        routeViewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<Route>() {
+            @Override
+            public void onChanged(Route route) {
+                String routeSelected=route.getLineName().toUpperCase();
+                edtverruta.setText(routeSelected);
+
+                btnCambiarSentido.setOnClickListener(v2 -> {
+                    String lineId=route.getLineId();
+                    String turnId=route.getTunId();
+                    if(turnId.equals(firstTurnId)){
+                        firstTurnId=secondTurnId;
+                        secondTurnId=turnId;
+                    }
+                    Intent intent = new Intent(getActivity().getApplicationContext(), RouteActivity.class);
+                    intent.putExtra("lineId",lineId);
+                    intent.putExtra("firstTurnId",secondTurnId);
+                    intent.putExtra("secondTurnId",firstTurnId);
+                    getActivity().getApplicationContext().startActivity(intent);
+                });
+            }
+        });
     }
 
     public void onAttach(Context context){

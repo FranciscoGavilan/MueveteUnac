@@ -5,51 +5,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#E9E9FD"
+    android:background="@color/background_white"
     tools:context=".viewUser.view.viewLine.viewRoute.RouteInfoFragment">
 
-    <ImageView
-        android:id="@+id/btnSubir"
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_gravity="center"
-        android:background="#E9E9FD"
-        android:src="@drawable/baseline_remove_64"
-        android:scaleType="center"/>
-
-    <TextView
-        android:id="@+id/edtverruta"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:text="RUTA - CONO NORTE TM"
-        android:textColor="@color/black"
-        android:textSize="18dp" />
+        android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/btnSubir"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:background="@color/background_white"
+            android:src="@drawable/baseline_remove_64"
+            android:scaleType="center"
+            android:onClick="onClick"/>
 
-    <Button
-        android:id="@+id/btnCambiarSentido"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="30dp"
-        android:layout_width="wrap_content"
-        android:background="@drawable/style_button"
-        android:textColor="@color/white"
-        android:text="Cambiar turno/horario"
-        android:textSize="16dp"
-        android:textAllCaps="false"
-        android:onClick="onClick"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:drawableLeft="@drawable/baseline_360_24"
-        android:drawablePadding="5dp"
-        />
+        <TextView
+            android:id="@+id/edtverruta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="RUTA - CONO NORTE TM"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/btnCambiarSentido"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:background="@drawable/style_button"
+            android:textColor="@color/white"
+            android:text="Cambiar turno/horario"
+            android:textSize="16dp"
+            android:textAllCaps="false"
+            android:onClick="onClick"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/baseline_360_24"
+            android:drawablePadding="5dp"
+            />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/todosparaderos"
-        android:paddingVertical="20dp">
+        android:layout_height="wrap_content"
+        android:id="@+id/todosparaderos">
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

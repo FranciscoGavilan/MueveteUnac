@@ -1,6 +1,7 @@
 package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,13 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mueveteunac2.R;
+import com.example.mueveteunac2.viewUser.model.Route;
+import com.example.mueveteunac2.viewUser.model.Stop;
+import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,6 +54,8 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap map;
     JSONObject jso;
     Double longitudOrigen,latitudOrigen,longitudFinal,latitudFinal;
+
+    private RouteViewModel routeViewModel;
 
     private OnFragmentInteractionListener mListener;
 
@@ -121,81 +130,25 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        /*if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(-12.06215, -77.11726)).zoom(18).build();
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)) {
+        /*String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + Geopoint_Lat.get(i-1) + "," + Geopoint_Long.get(i-1) +
+                "&destination=" + Geopoint_Lat.get(i) + "," + Geopoint_Long.get(i) + "&key=AIzaSyAR8NVCtaWJeA9PPPZFDLcWJczug-xZ5GQ";
 
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
+            try {
+                jso = new JSONObject(response);
+                trazarruta(jso);
+                Log.i("jsonRuta", "" + response);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+        }, error1 -> {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-            return;
-        }*/
-        FirebaseFirestore db= FirebaseFirestore.getInstance();
-
-        Query query=db.collection("Route").document(documentRoute).collection("Stop").orderBy("orderStop", Query.Direction.ASCENDING);
-
-        query.addSnapshotListener((value, error) -> {
-            if (error != null) {
-                error.printStackTrace();
-                return;
-            }
-            String firstStop="";
-            String lastStop="";
-            List<Double> Geopoint_Lat=new ArrayList<>();
-            List<Double> Geopoint_Long=new ArrayList<>();
-            for (QueryDocumentSnapshot doc : value) {
-                        if (doc.get("idStop") != null) {
-                            Geopoint_Lat.add(doc.getGeoPoint("position").getLatitude());
-                            Geopoint_Long.add(doc.getGeoPoint("position").getLongitude());
-                            if (doc.getLong("orderStop")==1) {
-                                latitudOrigen =doc.getGeoPoint("position").getLatitude();
-                                longitudOrigen =doc.getGeoPoint("position").getLongitude();
-                                firstStop=doc.getString("nameStop");
-                            } else if (doc.getLong("orderStop")==Long.parseLong(value.size()+"")) {
-                                latitudFinal =doc.getGeoPoint("position").getLatitude();
-                                longitudFinal =doc.getGeoPoint("position").getLongitude();
-                                lastStop=doc.getString("nameStop");
-
-                            }
-                        }
-                    }
-                    LatLng Origen = new LatLng(latitudOrigen, longitudOrigen);
-                    map.addMarker(new MarkerOptions().position(Origen).title(firstStop));
-
-                    LatLng Final = new LatLng(latitudFinal, longitudFinal);
-                    map.addMarker(new MarkerOptions().position(Final).title(lastStop));
-
-                    Double latitud = (latitudOrigen + latitudFinal) / 2;
-                    Double longitud = (longitudOrigen + longitudFinal) / 2;
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(latitud, longitud)).zoom(11.2F).build();
-                    map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                    for (int i=1;i<value.size();i++){
-                        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + Geopoint_Lat.get(i-1) + "," + Geopoint_Long.get(i-1) +
-                                "&destination=" + Geopoint_Lat.get(i) + "," + Geopoint_Long.get(i) + "&key=AIzaSyAR8NVCtaWJeA9PPPZFDLcWJczug-xZ5GQ";
-
-                        RequestQueue queue = Volley.newRequestQueue(getActivity());
-                        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-                            try {
-                                jso = new JSONObject(response);
-                                trazarruta(jso);
-                                Log.i("jsonRuta", "" + response);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }, error1 -> {
-
-                        });
-                        queue.add(stringRequest);
-                    }
-                });
+        });/*
 
         //-12.0613052!4d-77.1172487
         /*String idlinea=String.valueOf(itemdetail);
@@ -272,6 +225,43 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
         requestQueue.add(jsonArrayRequest);*/
 
 
+
+    }
+
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        routeViewModel = new ViewModelProvider(requireActivity()).get(RouteViewModel.class);
+        routeViewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<Route>() {
+            @Override
+            public void onChanged(Route route) {
+                List<Stop> stopList=route.getStopList();
+                Integer tamaño=stopList.size();
+                Double latitud,longitud;
+                for (Stop stop: stopList) {
+                    latitud=stop.getStopPosition().getLatitude();
+                    longitud=stop.getStopPosition().getLongitude();
+
+                    LatLng busStop = new LatLng(latitud, longitud);
+                    map.addMarker(new MarkerOptions().position(busStop).title(stop.getStopName()));
+
+                    if(stop.getStopOrder()==1){
+                        latitudOrigen=stop.getStopPosition().getLatitude();
+                        longitudOrigen=stop.getStopPosition().getLongitude();
+                    } else if (stop.getStopOrder()==tamaño) {
+                        latitudFinal=stop.getStopPosition().getLatitude();
+                        longitudFinal=stop.getStopPosition().getLongitude();
+                    }
+                }
+
+                Double latitudPosition = (latitudOrigen + latitudFinal) / 2;
+                Double longitudPosition = (longitudOrigen + longitudFinal) / 2;
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(latitudPosition, longitudPosition)).zoom(11.2F).build();
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
 
     }
 

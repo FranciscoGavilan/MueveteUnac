@@ -20,19 +20,15 @@ import com.example.mueveteunac2.viewUser.model.Stop;
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.viewUser.view.interfaces.MoveMapAndFragment;
 import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
-
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
- */
 public class RouteStopFragment extends Fragment {
 
     private StopAdapter stopAdapter;
     private RecyclerView recyclerViewStop;
     private RouteViewModel routeViewModel;
     private MoveMapAndFragment moveMapAndFragment;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +38,8 @@ public class RouteStopFragment extends Fragment {
         recyclerViewStop=view.findViewById(R.id.paradarorecyclerView);
 
         stopAdapter=new StopAdapter();
-        recyclerViewStop.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager=new LinearLayoutManager(getContext());
+        recyclerViewStop.setLayoutManager(linearLayoutManager);
 
         return view;
     }
@@ -62,8 +59,9 @@ public class RouteStopFragment extends Fragment {
 
         stopAdapter.setOnStopClickListener(new StopAdapter.OnStopClickListener(){
             @Override
-            public void onStopClick(Stop stop) {
+            public void onStopClick(Stop stop,Integer position) {
                 moveMapAndFragment.mapAndFragment(stop);
+                linearLayoutManager.scrollToPosition(position);
             }
         });
 

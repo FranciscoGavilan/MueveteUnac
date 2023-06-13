@@ -1,20 +1,14 @@
 package com.example.mueveteunac2.viewUser.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.viewUser.model.Line;
-import com.example.mueveteunac2.viewUser.view.viewLine.viewRoute.RouteActivity;
-
 import java.util.List;
 
 public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder>{

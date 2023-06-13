@@ -3,15 +3,12 @@ package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.net.Uri;
 
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -36,9 +33,9 @@ public class RouteActivity extends AppCompatActivity implements MoveMapAndFragme
     private CircleImageView image;
     private ImageButton back;
     private String lineId,firstTurnId,secondTurnId;
-    private float tam1,tam2;
     private RouteViewModel routeViewModel;
     private TextView twRoute;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +74,8 @@ public class RouteActivity extends AppCompatActivity implements MoveMapAndFragme
         routeViewModel.getLiveDatafromFireStore().observe(this, new Observer<Route>() {
             @Override
             public void onChanged(Route route) {
-                String routeSelected= route.getTurn();
-                twRoute.setText("Turno "+routeSelected);
+                String routeSelected= "Turno"+route.getTurn()+" - "+route.getRouteSchedule();
+                twRoute.setText(routeSelected);
             }
         });
 
@@ -110,37 +107,6 @@ public class RouteActivity extends AppCompatActivity implements MoveMapAndFragme
         });
         popup.show();
     }
-
-    /*public void pulsarvista(Boolean stopSelected,Boolean isMapSeen) {
-        tam1= ((LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea1).getLayoutParams()).weight;
-        tam2=((LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea2).getLayoutParams()).weight;
-
-        LinearLayout.LayoutParams p1= (LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea1).getLayoutParams();
-        LinearLayout.LayoutParams p2= (LinearLayout.LayoutParams) RouteActivity.this.findViewById(R.id.linea2).getLayoutParams();
-
-        if(stopSelected==false){
-            if(!isMapSeen){
-                p1.weight = (float) 0.0;
-                p2.weight = (float) 1.0;
-
-            }else{
-                p1.weight = (float) 0.8;
-                p2.weight = (float) 0.2;
-            }
-        }else{
-            if(isMapSeen){
-                p1.weight = (float) 0.6;
-                p2.weight = (float) 0.4;
-            }else {
-                p1.weight = (float) 0.0;
-                p2.weight = (float) 1.0;
-            }
-        }
-
-        RouteActivity.this.findViewById(R.id.linea1).setLayoutParams(p1);
-        RouteActivity.this.findViewById(R.id.linea2).setLayoutParams(p2);
-        Toast.makeText(this,stopSelected+" "+isMapSeen,Toast.LENGTH_SHORT).show();
-    }*/
 
     @Override
     public void mapAndFragment(Stop stop) {

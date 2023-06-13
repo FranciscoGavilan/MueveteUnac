@@ -1,7 +1,6 @@
 package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -22,7 +20,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.viewUser.model.Route;
 import com.example.mueveteunac2.viewUser.model.Stop;
-import com.example.mueveteunac2.viewUser.view.interfaces.MoveMapAndFragment;
 import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,8 +29,10 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
@@ -45,13 +44,18 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
 
     private GoogleMap map;
     private Double longitudOrigen,latitudOrigen,longitudFinal,latitudFinal;
+    private Double latitudPosition,longitudPosition;
     private RouteViewModel routeViewModel;
+    private FloatingActionButton btnLocation;
+    private Marker markerStop;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_route_map, container, false);
+
+        btnLocation=view.findViewById(R.id.btnLocation);
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -62,9 +66,18 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setMinZoomPreference(11.0f);
+        map.setMaxZoomPreference(19.0f);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(-12.06215, -77.11726)).zoom(16).build();
         map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitudPosition, longitudPosition), 11.2f));
+            }
+        });
 
         /*String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + Geopoint_Lat.get(i-1) + "," + Geopoint_Long.get(i-1) +
                 "&destination=" + Geopoint_Lat.get(i) + "," + Geopoint_Long.get(i) + "&key=AIzaSyAR8NVCtaWJeA9PPPZFDLcWJczug-xZ5GQ";
@@ -82,41 +95,7 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
 
         });/*
 
-        //-12.0613052!4d-77.1172487
-        /*String idlinea=String.valueOf(itemdetail);
-        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        String URL1 = "http://192.168.0.22/mueveteunac/visualizar_latylong.php?idlinea=" +idlinea+"&idturno="+MOT;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                URL1,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        int t = response.length();
-                        try {
-                            for (int i = 0; i < t; i++) {
-                                JSONObject jsonObject = new JSONObject(response.get(i).toString());
-                                if (i == 0) {
-                                    latitudOrigen = Double.valueOf(jsonObject.getDouble("Latitud"));
-                                    longitudOrigen = Double.valueOf(jsonObject.getDouble("Longitud"));
-                                } else if (i == 1) {
-                                    latitudFinal = Double.valueOf(jsonObject.getDouble("Latitud"));
-                                    longitudFinal = Double.valueOf(jsonObject.getDouble("Longitud"));
-                                }
 
-                            }
-                            LatLng Origen = new LatLng(latitudOrigen, longitudOrigen);
-                            map.addMarker(new MarkerOptions().position(Origen).title("Paredero Inicial"));
-
-                            LatLng Final = new LatLng(latitudFinal, longitudFinal);
-                            map.addMarker(new MarkerOptions().position(Final).title("Paredero Final"));
-
-                            Double latitud = (latitudOrigen + latitudFinal) / 2;
-                            Double longitud = (longitudOrigen + longitudFinal) / 2;
-                            CameraPosition cameraPosition = new CameraPosition.Builder()
-                                    .target(new LatLng(latitud, longitud)).zoom(12).build();
-                            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                             String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + latitudOrigen + "," + longitudOrigen +
                                     "&destination=" + latitudFinal + "," + longitudFinal + "&key=AIzaSyAR8NVCtaWJeA9PPPZFDLcWJczug-xZ5GQ";
@@ -153,11 +132,7 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
 
                     }
                 }
-        );
-        requestQueue.add(jsonArrayRequest);*/
-
-
-
+        );*/
     }
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -175,7 +150,7 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
                     longitud=stop.getStopPosition().getLongitude();
 
                     LatLng busStop = new LatLng(latitud, longitud);
-                    map.addMarker(new MarkerOptions().position(busStop).title(stop.getStopName()).
+                    map.addMarker(new MarkerOptions().position(busStop).
                             icon(bitmapDescriptorFromVector(getActivity(),
                                     R.drawable.baseline_point_map)));
 
@@ -188,8 +163,8 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
                     }
                 }
 
-                Double latitudPosition = (latitudOrigen + latitudFinal) / 2;
-                Double longitudPosition = (longitudOrigen + longitudFinal) / 2;
+                latitudPosition = (latitudOrigen + latitudFinal) / 2;
+                longitudPosition = (longitudOrigen + longitudFinal) / 2;
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(new LatLng(latitudPosition, longitudPosition)).
@@ -237,38 +212,20 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission is granted. Continue the action or workflow
-                    // in your app.
-                } else {
-                    // Explain to the user that the feature is unavailable because
-                    // the features requires a permission that the user has denied.
-                    // At the same time, respect the user's decision. Don't link to
-                    // system settings in an effort to convince the user to change
-                    // their decision.
-                }
-                return;
-        }
-        // Other 'case' lines to check for other
-        // permissions this app might request.
-    }
-
     public void moveToStop(Stop stop) {
+
+        if(markerStop!=null){
+            markerStop.remove();
+        }
+
         Double stopLatitud = stop.getStopPosition().getLatitude();
         Double stopLongitud = stop.getStopPosition().getLongitude();
 
         LatLng stopPosition = new LatLng(stopLatitud, stopLongitud);
 
-        /*map.addMarker(new MarkerOptions().position(stopPosition).title(stop.getStopName()).
+        markerStop=map.addMarker(new MarkerOptions().position(stopPosition).title(stop.getStopName()).
                 icon(bitmapDescriptorFromVector(getActivity(),
-                        R.drawable.baseline_point_map)));*/
+                        R.drawable.baseline_location_on_48)));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(stopPosition).

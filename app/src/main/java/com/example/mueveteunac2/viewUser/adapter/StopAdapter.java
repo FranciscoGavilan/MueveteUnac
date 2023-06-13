@@ -1,13 +1,16 @@
 package com.example.mueveteunac2.viewUser.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.core.view.ViewCompat;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,18 +45,15 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull StopAdapter.ViewHolder holder, int position) {
         String stopName=stopList.get(position).getStopName();
-        Integer stopOrder=stopList.get(position).getStopOrder();
         holder.nombre_paradero.setText(stopName);
-        /*if(stopOrder.equals(1)){
-            holder.vwTopStop.setVisibility(View.GONE);
-        }else if(stopOrder.equals(stopList.size())){
-            holder.vwBottomStop.setVisibility(View.GONE);
-            holder.vwBelowStop.setVisibility(View.GONE);
-        }*/
         if (expandedItems[position]) {
             // Mostrar el contenido adicional
+            ViewCompat.setBackgroundTintList(holder.circulo,ColorStateList.
+                    valueOf(Color.parseColor("#26843C")));
             holder.additionalStopContent.setVisibility(View.VISIBLE);
         } else {
+            ViewCompat.setBackgroundTintList(holder.circulo,ColorStateList.
+                    valueOf(Color.parseColor("#82C892")));
             // Ocultar el contenido adicional
             holder.additionalStopContent.setVisibility(View.GONE);
         }
@@ -85,7 +85,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
     }
 
     public interface OnStopClickListener {
-        void onStopClick(Stop stop);
+        void onStopClick(Stop stop,Integer position);
     }
 
     public void setOnButtonStopClickListener(OnButtonStopClickListener buttonListener) {
@@ -101,12 +101,14 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
         Button btnStopRealTime;
         View vwTopStop,vwBottomStop,vwBelowStop;
         LinearLayout additionalStopContent;
+        ImageView circulo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre_paradero=itemView.findViewById(R.id.whereabouts);
             vwTopStop=itemView.findViewById(R.id.vwTopStop);
             vwBottomStop=itemView.findViewById(R.id.vwBottomStop);
+            circulo=itemView.findViewById(R.id.circulo);
             additionalStopContent=itemView.findViewById(R.id.additionalStopContent);
             vwBelowStop=itemView.findViewById(R.id.vwBelowStop);
             btnStopRealTime=itemView.findViewById(R.id.btnStopRealTime);
@@ -126,13 +128,13 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder>{
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View viewStop) {
             if (clickListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Stop stop = stopList.get(position);
-                    clickListener.onStopClick(stop);
                     toggleItemExpansion(position);
+                    clickListener.onStopClick(stop,position);
                 }
             }
         }

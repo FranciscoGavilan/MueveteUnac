@@ -4,7 +4,7 @@ import java.util.List;
 public class Route {
     private String routeId;
     private String routeSchedule;
-    private String tunId;
+    private String turnId;
     private String turn;
     private List<Stop> stopList;
     private String lineId;
@@ -15,11 +15,11 @@ public class Route {
         // Constructor sin argumentos
     }
 
-    public Route(String routeId, String routeSchedule, String tunId, String turn,
+    public Route(String routeId, String routeSchedule, String turnId, String turn,
                  List<Stop> stopList, String lineId, String lineName) {
         this.routeId = routeId;
         this.routeSchedule = routeSchedule;
-        this.tunId = tunId;
+        this.turnId = turnId;
         this.turn = turn;
         this.stopList = stopList;
         this.lineId = lineId;
@@ -42,12 +42,12 @@ public class Route {
         this.routeSchedule = routeSchedule;
     }
 
-    public String getTunId() {
-        return tunId;
+    public String getTurnId() {
+        return turnId;
     }
 
-    public void setTunId(String tunId) {
-        this.tunId = tunId;
+    public void setTurnId(String tunId) {
+        this.turnId = tunId;
     }
 
     public String getTurn() {

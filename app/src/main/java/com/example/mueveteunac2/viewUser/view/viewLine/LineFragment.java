@@ -1,5 +1,6 @@
 package com.example.mueveteunac2.viewUser.view.viewLine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.viewUser.adapter.LineAdapter;
 import com.example.mueveteunac2.viewUser.model.Line;
+import com.example.mueveteunac2.viewUser.view.viewLine.viewRoute.RouteActivity;
 import com.example.mueveteunac2.viewUser.viewModel.LineViewModel;
 
 import java.util.List;
 
-public class LineFragment extends Fragment {
+public class LineFragment extends Fragment{
     LineAdapter lineAdapter;
     RecyclerView recyclerViewLine;
     LineViewModel lineViewModel;
@@ -55,5 +57,21 @@ public class LineFragment extends Fragment {
                 recyclerViewLine.setAdapter(lineAdapter);
             }
         });
+
+        lineAdapter.setOnLineClickListener(new LineAdapter.OnLineClickListener(){
+            @Override
+            public void onLineClick(Line line) {
+                String lineId=line.getLineId();
+                String route1stTurnId=line.getRoute1stTurnId();
+                String route2ndTurnId=line.getRoute2ndTurnId();
+
+                Intent intent = new Intent(getActivity(), RouteActivity.class);
+                intent.putExtra("lineId",lineId);
+                intent.putExtra("firstTurnId",route1stTurnId);
+                intent.putExtra("secondTurnId",route2ndTurnId);
+                startActivity(intent);
+            }
+        });
+
     }
 }

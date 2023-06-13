@@ -10,11 +10,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
         android:background="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="left"
-        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        android:gravity="left">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,34 +73,17 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
-
-    <LinearLayout
-
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
-        android:id="@+id/linea1">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
+            android:id="@+id/contenedor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/contenedor">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.2"
-        android:id="@+id/linea2">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
+            android:id="@+id/mostrarparaderos"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/mostrarparaderos">
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

@@ -10,42 +10,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <LinearLayout
-
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.7"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal"
-            >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <LinearLayout
-
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="0.2"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
                 android:gravity="center_horizontal|center_vertical">
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    >
+                    app:layout_constraintEnd_toStartOf="@+id/vwUpStop"
+                    app:layout_constraintStart_toStartOf="@+id/vwUpStop">
 
                     <View
-                        android:id="@+id/vwUpStop"
+                        android:id="@+id/vwTopStop"
                         android:layout_width="4dp"
                         android:layout_height="0dp"
-                        android:background="#656565"
+                        android:background="@color/stop_circle"
                         app:layout_constraintBottom_toTopOf="@+id/circulo"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0" />
 
-                    <View
+                    <ImageView
                         android:id="@+id/circulo"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
                         android:background="@drawable/style_circulo"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -53,10 +49,10 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <View
-                        android:id="@+id/vwDownStop"
+                        android:id="@+id/vwBottomStop"
                         android:layout_width="4dp"
                         android:layout_height="0dp"
-                        android:background="#656565"
+                        android:background="@color/stop_circle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -67,25 +63,82 @@
             <LinearLayout
 
                 android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="0.8"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
                 android:gravity="center_horizontal|center_vertical">
-            <TextView
-                android:id="@+id/whereabouts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Paraderos"
-                android:textColor="@color/black"
-                android:gravity="center_vertical" />
+                <TextView
+                    android:id="@+id/whereabouts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Paraderos"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical" />
             </LinearLayout>
         </LinearLayout>
-
         <LinearLayout
+            android:id="@+id/additionalStopContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
 
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.3"
-            android:gravity="center_horizontal|center_vertical">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:id="@+id/vwBelowStop"
+                        android:layout_width="4dp"
+                        android:layout_height="0dp"
+                        android:background="@color/stop_circle"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+            <LinearLayout
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <Button
+                        android:id="@+id/btnStopRealTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:background="@drawable/style_button"
+                        android:drawableLeft="@drawable/baseline_departure_board_16"
+                        android:drawablePadding="5dp"
+                        android:onClick="onClick"
+                        android:text="Ubicar en tiempo real"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </LinearLayout>
 
             <!--<Button
                 android:id="@+id/btnObservarparadero"
@@ -100,7 +153,7 @@
                 android:onClick="onClick"
                 android:drawableLeft="@drawable/baseline_departure_board_16"
                 android:drawablePadding="5dp"/>-->
-        </LinearLayout>
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

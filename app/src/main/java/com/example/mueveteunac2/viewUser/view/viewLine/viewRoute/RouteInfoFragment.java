@@ -1,45 +1,51 @@
 package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.customview.widget.ViewDragHelper;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mueveteunac2.R;
-import com.example.mueveteunac2.viewUser.model.Line;
 import com.example.mueveteunac2.viewUser.model.Route;
+import com.example.mueveteunac2.viewUser.model.Stop;
 import com.example.mueveteunac2.viewUser.view.viewLine.viewRoute.viewStop.StopInfoFragment;
-import com.example.mueveteunac2.viewUser.viewModel.LineViewModel;
 import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
 
-import java.util.List;
 
-public class RouteInfoFragment extends Fragment implements RouteStopFragment.OnFragmentInteractionListener{
+public class RouteInfoFragment extends Fragment {
 
-    ImageButton btnSubir;
-    Button btnCambiarSentido;
+    private ImageButton btnSubir;
+    private Button btnCambiarSentido;
     private TextView edtverruta;
-    private boolean boton_pulsado=true;
+    private Boolean isMapSeen = true;
     private RouteViewModel routeViewModel;
+    private Boolean stopSelected = false;
 
-    VisualizarparaderosFragment visualizarparaderos;
+    private ViewDragHelper viewDragHelper;
+    private ViewGroup resizeHandle,routeFragment;
 
     private static final String ARG_PARAM1 = "firstTurnId";
     private static final String ARG_PARAM2 = "secondTurnId";
 
 
     // TODO: Rename and change types of parameters
-    private String firstTurnId,secondTurnId;
+    private String firstTurnId, secondTurnId;
 
     public RouteInfoFragment() {
         // Required empty public constructor
@@ -72,29 +78,71 @@ public class RouteInfoFragment extends Fragment implements RouteStopFragment.OnF
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_route_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_route_info, container, false);
 
-        edtverruta= view.findViewById(R.id.edtverruta);
+        Fragment stopFragment = new RouteStopFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.todosparaderos, stopFragment).commit();
 
-        btnCambiarSentido =view.findViewById(R.id.btnCambiarSentido);
+        edtverruta = view.findViewById(R.id.edtverruta);
+        btnCambiarSentido = view.findViewById(R.id.btnCambiarSentido);
+        resizeHandle = view.findViewById(R.id.resize_handle);
+        routeFragment = view.findViewById(R.id.routeFragment);
 
-        btnSubir = view.findViewById(R.id.btnSubir);
+        ViewGroup.LayoutParams layoutParamsInfo = routeFragment.getLayoutParams();
+        layoutParamsInfo.height = 165;
+        routeFragment.setLayoutParams(layoutParamsInfo);
+
+        resizeHandle.setOnTouchListener(new View.OnTouchListener() {
+            private float initialY;
+            private int initialHeight;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int minHeight=v.getHeight();
+                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+                int screenHeight = displayMetrics.heightPixels;
+                int maxHeight = screenHeight - 120;
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        initialY = event.getRawY();
+                        initialHeight = routeFragment.getHeight();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float newY = event.getRawY();
+                        int newHeight = (int) (initialHeight + (initialY-newY));
+                        // Aplica restricciones si es necesario
+                        newHeight = Math.max(newHeight, minHeight);
+                        newHeight = Math.min(newHeight, maxHeight);
+                        // Actualiza el tamaño del fragmento
+                        ViewGroup.LayoutParams layoutParams = routeFragment.getLayoutParams();
+                        layoutParams.height = newHeight;
+                        routeFragment.setLayoutParams(layoutParams);
+                }
+                return true;
+            }
+        });
+        /*btnSubir = view.findViewById(R.id.btnSubir);
         btnSubir.setOnClickListener(v -> {
             Fragment paraderosFragment=new RouteStopFragment();
-            if(boton_pulsado){
-                boton_pulsado=false;
-                /*btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_down_30);*/
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.todosparaderos,paraderosFragment).commit();
+            if(isMapSeen){
+                isMapSeen=false;
+                if(stopSelected==false){
+                    btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_down_30);
+                    getActivity().getSupportFragmentManager().beginTransaction().
+                            replace(R.id.todosparaderos,paraderosFragment).commit();
+                }
             }else{
-                boton_pulsado=true;
-                /*btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_up_30);*/
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        remove(getActivity().getSupportFragmentManager().
-                                findFragmentById(R.id.todosparaderos)).commit();
+                isMapSeen=true;
+                btnSubir.setImageResource(R.drawable.baseline_keyboard_arrow_up_30);
+                if(stopSelected==false){
+
+                    getActivity().getSupportFragmentManager().beginTransaction().
+                            remove(getActivity().getSupportFragmentManager().
+                                    findFragmentById(R.id.todosparaderos)).commit();
+                }
             }
-            visualizarparaderos.pulsarvista();
-        });
+            visualizarparaderos.pulsarvista(stopSelected,isMapSeen);
+        });*/
         return view;
     }
 
@@ -105,38 +153,29 @@ public class RouteInfoFragment extends Fragment implements RouteStopFragment.OnF
         routeViewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<Route>() {
             @Override
             public void onChanged(Route route) {
-                String routeSelected=route.getLineName().toUpperCase();
+                String routeSelected = route.getLineName().toUpperCase();
                 edtverruta.setText(routeSelected);
 
                 btnCambiarSentido.setOnClickListener(v2 -> {
-                    String lineId=route.getLineId();
-                    String turnId=route.getTunId();
-                    if(turnId.equals(firstTurnId)){
-                        firstTurnId=secondTurnId;
-                        secondTurnId=turnId;
+                    String lineId = route.getLineId();
+                    String turnId = route.getTurnId();
+                    if (turnId.equals(firstTurnId)) {
+                        firstTurnId = secondTurnId;
+                        secondTurnId = turnId;
                     }
-                    Intent intent = new Intent(getActivity().getApplicationContext(), RouteActivity.class);
-                    intent.putExtra("lineId",lineId);
-                    intent.putExtra("firstTurnId",secondTurnId);
-                    intent.putExtra("secondTurnId",firstTurnId);
-                    getActivity().getApplicationContext().startActivity(intent);
+                    Intent intent = new Intent(getActivity(), RouteActivity.class);
+                    intent.putExtra("lineId", lineId);
+                    intent.putExtra("firstTurnId", secondTurnId);
+                    intent.putExtra("secondTurnId", firstTurnId);
+                    startActivity(intent);
                 });
             }
         });
     }
 
-    public void onAttach(Context context){
-        super.onAttach(context);
-        if (context instanceof VisualizarparaderosFragment){
-            visualizarparaderos=(VisualizarparaderosFragment) context;
-        }
-    }
-
-     public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    public interface VisualizarparaderosFragment{
-        void pulsarvista();
+    public void moveFragment() {
+        ViewGroup.LayoutParams layoutParamsInfo = routeFragment.getLayoutParams();
+        layoutParamsInfo.height = 165;
+        routeFragment.setLayoutParams(layoutParamsInfo);
     }
 }

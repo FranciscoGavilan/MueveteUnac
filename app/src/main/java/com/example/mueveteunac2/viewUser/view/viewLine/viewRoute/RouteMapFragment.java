@@ -1,99 +1,51 @@
 package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.viewUser.model.Route;
 import com.example.mueveteunac2.viewUser.model.Stop;
+import com.example.mueveteunac2.viewUser.view.interfaces.MoveMapAndFragment;
 import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.android.PolyUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RouteMapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
+public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
 
-    GoogleMap map;
-    JSONObject jso;
-    Double longitudOrigen,latitudOrigen,longitudFinal,latitudFinal;
-
+    private GoogleMap map;
+    private Double longitudOrigen,latitudOrigen,longitudFinal,latitudFinal;
     private RouteViewModel routeViewModel;
-
-    private OnFragmentInteractionListener mListener;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "documentRoute";
-
-
-    // TODO: Rename and change types of parameters
-    private String documentRoute;
-
-
-    public RouteMapFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-
-     * @return A new instance of fragment MostrarmapaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RouteMapFragment newInstance(String documentLine) {
-        RouteMapFragment fragment = new RouteMapFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, documentLine);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            documentRoute = getArguments().getString(ARG_PARAM1);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,31 +59,11 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    public void OnButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-    public void onAttach(Context context){
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener){
-            mListener=(OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()+"debe implementar OnFragment InteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener=null;
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(-12.06215, -77.11726)).zoom(18).build();
+                .target(new LatLng(-12.06215, -77.11726)).zoom(16).build();
         map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         /*String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + Geopoint_Lat.get(i-1) + "," + Geopoint_Long.get(i-1) +
@@ -243,7 +175,9 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
                     longitud=stop.getStopPosition().getLongitude();
 
                     LatLng busStop = new LatLng(latitud, longitud);
-                    map.addMarker(new MarkerOptions().position(busStop).title(stop.getStopName()));
+                    map.addMarker(new MarkerOptions().position(busStop).title(stop.getStopName()).
+                            icon(bitmapDescriptorFromVector(getActivity(),
+                                    R.drawable.baseline_point_map)));
 
                     if(stop.getStopOrder()==1){
                         latitudOrigen=stop.getStopPosition().getLatitude();
@@ -258,11 +192,22 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
                 Double longitudPosition = (longitudOrigen + longitudFinal) / 2;
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(latitudPosition, longitudPosition)).zoom(11.2F).build();
+                        .target(new LatLng(latitudPosition, longitudPosition)).
+                        zoom(11.2F).build();
                 map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
+    }
 
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void trazarruta(JSONObject jso) {
@@ -315,7 +260,20 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback {
         // permissions this app might request.
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
+    public void moveToStop(Stop stop) {
+        Double stopLatitud = stop.getStopPosition().getLatitude();
+        Double stopLongitud = stop.getStopPosition().getLongitude();
+
+        LatLng stopPosition = new LatLng(stopLatitud, stopLongitud);
+
+        /*map.addMarker(new MarkerOptions().position(stopPosition).title(stop.getStopName()).
+                icon(bitmapDescriptorFromVector(getActivity(),
+                        R.drawable.baseline_point_map)));*/
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(stopPosition).
+                zoom(18).build();
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

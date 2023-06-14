@@ -12,6 +12,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shimmer_auto_start="true">
+        <LinearLayout
+            android:id="@+id/viewLineLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/line_loanding"/>
+            <include layout="@layout/line_loanding"/>
+            <include layout="@layout/line_loanding"/>
+            <include layout="@layout/line_loanding"/>
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <!-- TODO: Update blank fragment layout -->
 
 

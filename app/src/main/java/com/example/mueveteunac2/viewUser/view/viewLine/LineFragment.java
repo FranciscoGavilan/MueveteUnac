@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,13 +19,15 @@ import com.example.mueveteunac2.viewUser.adapter.LineAdapter;
 import com.example.mueveteunac2.viewUser.model.Line;
 import com.example.mueveteunac2.viewUser.view.viewLine.viewRoute.RouteActivity;
 import com.example.mueveteunac2.viewUser.viewModel.LineViewModel;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
 public class LineFragment extends Fragment{
-    LineAdapter lineAdapter;
-    RecyclerView recyclerViewLine;
-    LineViewModel lineViewModel;
+    private LineAdapter lineAdapter;
+    private RecyclerView recyclerViewLine;
+    private LineViewModel lineViewModel;
+    private LinearLayout viewLineLoading;
 
     public LineFragment() {
         // Required empty public constructor
@@ -37,6 +40,7 @@ public class LineFragment extends Fragment{
         View view=inflater.inflate(R.layout.fragment_line, container, false);
 
         recyclerViewLine=view.findViewById(R.id.recyclerView);
+        viewLineLoading=view.findViewById(R.id.viewLineLoading);
 
         lineAdapter=new LineAdapter();
         recyclerViewLine.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -53,6 +57,7 @@ public class LineFragment extends Fragment{
         lineViewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<Line>>() {
             @Override
             public void onChanged(List<Line> lines) {
+                viewLineLoading.setVisibility(View.GONE);
                 lineAdapter.setLineList(getContext(),lines);
                 recyclerViewLine.setAdapter(lineAdapter);
             }

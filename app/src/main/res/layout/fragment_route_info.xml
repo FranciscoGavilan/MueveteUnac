@@ -5,50 +5,64 @@
     android:background="@color/background_white"
     android:orientation="vertical"
     android:id="@+id/routeFragment">
-
-    <LinearLayout
-        android:id="@+id/resize_handle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:orientation="vertical"
-        android:background="@color/background_white">
-
-        <ImageView
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/resize_handle"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:background="@color/background_white"
-            android:scaleType="center"
-            android:src="@drawable/baseline_remove_64" />
+            android:layout_height="110dp"
+            android:orientation="vertical"
+            android:background="@color/background_white">
 
-        <TextView
-            android:id="@+id/edtverruta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:text="RUTA - CONO NORTE TM"
-            android:textColor="@color/black"
-            android:textSize="18dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@color/background_white"
+                android:scaleType="center"
+                android:src="@drawable/baseline_remove_64" />
 
-        <Button
-            android:id="@+id/btnCambiarSentido"
+            <TextView
+                android:id="@+id/edtverruta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="CONO NORTE"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/btnCambiarSentido"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/style_button"
+                android:drawableLeft="@drawable/baseline_360_24"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="Cambiar turno/horario"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/circularProgressBar"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/style_button"
-            android:drawableLeft="@drawable/baseline_360_24"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="Cambiar turno/horario"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-    </LinearLayout>
+            android:layout_height="110dp"
+            android:padding="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+
+            />
+    </RelativeLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

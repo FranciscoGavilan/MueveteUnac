@@ -74,7 +74,7 @@ public class RouteActivity extends AppCompatActivity implements MoveMapAndFragme
         routeViewModel.getLiveDatafromFireStore().observe(this, new Observer<Route>() {
             @Override
             public void onChanged(Route route) {
-                String routeSelected= "Turno"+route.getTurn()+" - "+route.getRouteSchedule();
+                String routeSelected= "Turno "+route.getTurn()+" - "+route.getRouteSchedule();
                 twRoute.setText(routeSelected);
             }
         });

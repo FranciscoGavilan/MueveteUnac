@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ public class RouteInfoFragment extends Fragment {
     private TextView edtverruta;
     private RouteViewModel routeViewModel;
     private ViewGroup resizeHandle,routeFragment;
+    private ProgressBar circularProgressBar;
 
     private static final String ARG_PARAM1 = "firstTurnId";
     private static final String ARG_PARAM2 = "secondTurnId";
@@ -70,7 +72,9 @@ public class RouteInfoFragment extends Fragment {
 
         edtverruta = view.findViewById(R.id.edtverruta);
         btnCambiarSentido = view.findViewById(R.id.btnCambiarSentido);
+        circularProgressBar=view.findViewById(R.id.circularProgressBar);
         resizeHandle = view.findViewById(R.id.resize_handle);
+        resizeHandle.setVisibility(View.GONE);
         routeFragment = view.findViewById(R.id.routeFragment);
 
         ViewGroup.LayoutParams layoutParamsInfo = routeFragment.getLayoutParams();
@@ -116,6 +120,8 @@ public class RouteInfoFragment extends Fragment {
         routeViewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<Route>() {
             @Override
             public void onChanged(Route route) {
+                circularProgressBar.setVisibility(View.GONE);
+                resizeHandle.setVisibility(View.VISIBLE);
                 String routeSelected = route.getLineName().toUpperCase();
                 edtverruta.setText(routeSelected);
 

@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.viewUser.model.Route;
 import com.example.mueveteunac2.viewUser.model.Stop;
+import com.example.mueveteunac2.viewUser.view.response.PointResponse;
+import com.example.mueveteunac2.viewUser.viewModel.PointViewModel;
 import com.example.mueveteunac2.viewUser.viewModel.RouteViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,13 +32,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.maps.android.PolyUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.List;
 
 public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
@@ -46,8 +44,10 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
     private Double longitudOrigen,latitudOrigen,longitudFinal,latitudFinal;
     private Double latitudPosition,longitudPosition;
     private RouteViewModel routeViewModel;
+    private PointViewModel pointViewModel;
     private FloatingActionButton btnLocation;
-    private Marker markerStop;
+    private Marker markerStop,markerRoute;
+    private Polyline routePolyline;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,70 +78,19 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitudPosition, longitudPosition), 11.2f));
             }
         });
-
-        /*String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + Geopoint_Lat.get(i-1) + "," + Geopoint_Long.get(i-1) +
-                "&destination=" + Geopoint_Lat.get(i) + "," + Geopoint_Long.get(i) + "&key=AIzaSyAR8NVCtaWJeA9PPPZFDLcWJczug-xZ5GQ";
-
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
-            try {
-                jso = new JSONObject(response);
-                trazarruta(jso);
-                Log.i("jsonRuta", "" + response);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, error1 -> {
-
-        });/*
-
-
-
-                            String url = "https://maps.googleapis.com/maps/api/directions/json?origin=" + latitudOrigen + "," + longitudOrigen +
-                                    "&destination=" + latitudFinal + "," + longitudFinal + "&key=AIzaSyAR8NVCtaWJeA9PPPZFDLcWJczug-xZ5GQ";
-
-                            RequestQueue queue = Volley.newRequestQueue(getActivity());
-                            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        jso = new JSONObject(response);
-                                        trazarruta(jso);
-                                        Log.i("jsonRuta", "" + response);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-
-                                }
-                            });
-                            queue.add(stringRequest);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        );*/
     }
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         routeViewModel = new ViewModelProvider(requireActivity()).get(RouteViewModel.class);
+        pointViewModel = new ViewModelProvider(requireActivity()).get(PointViewModel.class);
         routeViewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<Route>() {
             @Override
             public void onChanged(Route route) {
+                if(markerRoute!=null){
+                    markerRoute.remove();
+                }
                 List<Stop> stopList=route.getStopList();
                 Integer tamaño=stopList.size();
                 Double latitud,longitud;
@@ -150,7 +99,8 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
                     longitud=stop.getStopPosition().getLongitude();
 
                     LatLng busStop = new LatLng(latitud, longitud);
-                    map.addMarker(new MarkerOptions().position(busStop).
+
+                    markerRoute=map.addMarker(new MarkerOptions().position(busStop).
                             icon(bitmapDescriptorFromVector(getActivity(),
                                     R.drawable.baseline_point_map)));
 
@@ -162,6 +112,14 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
                         longitudFinal=stop.getStopPosition().getLongitude();
                     }
                 }
+
+                pointViewModel.getPointFromApi(stopList);
+                pointViewModel.getPointResponseLiveData().observe(getViewLifecycleOwner(), new Observer<PointResponse>() {
+                    @Override
+                    public void onChanged(PointResponse pointResponse) {
+                        drawPolyline(pointResponse);
+                    }
+                });
 
                 latitudPosition = (latitudOrigen + latitudFinal) / 2;
                 longitudPosition = (longitudOrigen + longitudFinal) / 2;
@@ -185,33 +143,6 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    private void trazarruta(JSONObject jso) {
-        JSONArray jRoutes;
-        JSONArray jLegs;
-        JSONArray jSteps;
-
-        try {
-            jRoutes=jso.getJSONArray("routes");
-            for (int i=0; i<jRoutes.length();i++){
-                jLegs=((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
-
-                for (int j=0; j<jLegs.length();j++){
-                    jSteps=((JSONObject)(jLegs.get(i))).getJSONArray("steps");
-
-                    for (int k=0; k<jSteps.length();k++){
-                        String polyline=""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
-                        Log.i("end",""+polyline);
-                        List<LatLng> list= PolyUtil.decode(polyline);
-                        map.addPolyline(new PolylineOptions().addAll(list).color(Color.BLUE).width(10));
-                    }
-                }
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void moveToStop(Stop stop) {
 
         if(markerStop!=null){
@@ -232,5 +163,23 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
                 zoom(18).build();
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    public void drawPolyline(PointResponse pointResponse) {
+        if(routePolyline!=null){
+            routePolyline.remove();
+        }
+
+        if (pointResponse != null && pointResponse.getFeatures() != null && !pointResponse.getFeatures().isEmpty()) {
+
+            String geometry = pointResponse.getFeatures().get(0).getGeometry();
+            List<LatLng> latLngList = PolyUtil.decode(geometry);
+
+            // Crear la polyline
+            PolylineOptions polylineOptions = new PolylineOptions().addAll(latLngList);
+            polylineOptions.color(Color.parseColor("#82C892"));
+            polylineOptions.width(8);
+            routePolyline = map.addPolyline(polylineOptions);
+        }
     }
 }

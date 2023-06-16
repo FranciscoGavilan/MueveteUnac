@@ -27,16 +27,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".viewUser.view.viewLine.viewRoute.viewStop.StopActivity"
-            android:exported="false"
-            android:theme="@style/Theme.MueveteUnac2.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".viewUser.view.viewLine.viewRoute.RouteActivity"
             android:exported="false"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.MueveteUnac2.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"

@@ -1,6 +1,7 @@
 package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -68,7 +69,6 @@ public class RouteActivity extends AppCompatActivity implements MoveMapAndFragme
         firstTurnId= getIntent().getExtras().getString("firstTurnId");
         secondTurnId= getIntent().getExtras().getString("secondTurnId");
 
-
         routeViewModel = new ViewModelProvider(this).get(RouteViewModel.class);
         routeViewModel.getRouteFromFirestore(lineId,firstTurnId);
         routeViewModel.getLiveDatafromFireStore().observe(this, new Observer<Route>() {
@@ -82,12 +82,24 @@ public class RouteActivity extends AppCompatActivity implements MoveMapAndFragme
         Fragment map=new RouteMapFragment();
         Fragment info=new RouteInfoFragment();
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,map).commit();
+
         Bundle turns=new Bundle();
         turns.putString("firstTurnId",firstTurnId);
         turns.putString("secondTurnId",secondTurnId);
-        getSupportFragmentManager().beginTransaction().replace(R.id.contenedor,map).commit();
-
+        info.setArguments(turns);
         getSupportFragmentManager().beginTransaction().replace(R.id.mostrarparaderos,info).commit();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Notificar a los fragmentos sobre el cambio de orientación
+        for (Fragment routeInfoFragment : getSupportFragmentManager().getFragments()) {
+            if (routeInfoFragment instanceof RouteInfoFragment) {
+                ((RouteInfoFragment) routeInfoFragment).onParentConfigurationChanged();
+            }
+        }
     }
 
     public void showPopup(View v) {

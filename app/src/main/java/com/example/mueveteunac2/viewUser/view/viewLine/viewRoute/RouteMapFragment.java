@@ -103,31 +103,28 @@ public class RouteMapFragment extends Fragment implements OnMapReadyCallback{
                     markerRoute=map.addMarker(new MarkerOptions().position(busStop).
                             icon(bitmapDescriptorFromVector(getActivity(),
                                     R.drawable.baseline_point_map)));
-
-                    if(stop.getStopOrder()==1){
-                        latitudOrigen=stop.getStopPosition().getLatitude();
-                        longitudOrigen=stop.getStopPosition().getLongitude();
-                    } else if (stop.getStopOrder()==tamaño) {
-                        latitudFinal=stop.getStopPosition().getLatitude();
-                        longitudFinal=stop.getStopPosition().getLongitude();
-                    }
                 }
+
+                latitudOrigen=stopList.get(0).getStopPosition().getLatitude();
+                longitudOrigen=stopList.get(0).getStopPosition().getLongitude();
+
+                latitudFinal=stopList.get(tamaño-1).getStopPosition().getLatitude();
+                longitudFinal=stopList.get(tamaño-1).getStopPosition().getLongitude();
+
+                latitudPosition = (latitudOrigen + latitudFinal) / 2;
+                longitudPosition = (longitudOrigen + longitudFinal) / 2;
 
                 pointViewModel.getPointFromApi(stopList);
                 pointViewModel.getPointResponseLiveData().observe(getViewLifecycleOwner(), new Observer<PointResponse>() {
                     @Override
                     public void onChanged(PointResponse pointResponse) {
                         drawPolyline(pointResponse);
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(new LatLng(latitudPosition, longitudPosition)).
+                                zoom(11.2F).build();
+                        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     }
                 });
-
-                latitudPosition = (latitudOrigen + latitudFinal) / 2;
-                longitudPosition = (longitudOrigen + longitudFinal) / 2;
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(latitudPosition, longitudPosition)).
-                        zoom(11.2F).build();
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
     }

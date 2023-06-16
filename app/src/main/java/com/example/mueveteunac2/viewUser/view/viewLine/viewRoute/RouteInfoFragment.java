@@ -1,6 +1,7 @@
 package com.example.mueveteunac2.viewUser.view.viewLine.viewRoute;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -134,8 +136,8 @@ public class RouteInfoFragment extends Fragment {
                     }
                     Intent intent = new Intent(getActivity(), RouteActivity.class);
                     intent.putExtra("lineId", lineId);
-                    intent.putExtra("firstTurnId", secondTurnId);
-                    intent.putExtra("secondTurnId", firstTurnId);
+                    intent.putExtra("firstTurnId", firstTurnId);
+                    intent.putExtra("secondTurnId", secondTurnId);
                     startActivity(intent);
                 });
             }
@@ -145,6 +147,12 @@ public class RouteInfoFragment extends Fragment {
     public void moveFragment() {
         ViewGroup.LayoutParams layoutParamsInfo = routeFragment.getLayoutParams();
         layoutParamsInfo.height = 99+165;
+        routeFragment.setLayoutParams(layoutParamsInfo);
+    }
+
+    public void onParentConfigurationChanged() {
+        ViewGroup.LayoutParams layoutParamsInfo = routeFragment.getLayoutParams();
+        layoutParamsInfo.height = 165;
         routeFragment.setLayoutParams(layoutParamsInfo);
     }
 }

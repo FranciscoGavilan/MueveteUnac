@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".viewUser.view.viewLine.LineFragment"
+    tools:context=".viewUser.ui.view.viewLine.LineFragment"
     android:background="#E9E9FD"
     android:id="@+id/f">
     <androidx.recyclerview.widget.RecyclerView

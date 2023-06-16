@@ -139,21 +139,5 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </LinearLayout>
-
-            <!--<Button
-                android:id="@+id/btnObservarparadero"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="Ubicar en tiempo real"
-                android:textColor="@color/white"
-                android:textSize="10dp"
-                android:textAllCaps="false"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:background="@drawable/style_button"
-                android:onClick="onClick"
-                android:drawableLeft="@drawable/baseline_departure_board_16"
-                android:drawablePadding="5dp"/>-->
-
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

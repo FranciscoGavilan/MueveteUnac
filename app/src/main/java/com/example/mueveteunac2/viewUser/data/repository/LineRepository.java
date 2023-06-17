@@ -3,7 +3,7 @@ package com.example.mueveteunac2.viewUser.data.repository;
 import androidx.annotation.Nullable;
 
 import com.example.mueveteunac2.viewUser.data.model.Line;
-import com.example.mueveteunac2.viewUser.domain.useCase.GetLinesUseCase;
+import com.example.mueveteunac2.viewUser.domain.GetLinesUseCase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;

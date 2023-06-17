@@ -22,7 +22,7 @@ import com.example.mueveteunac2.LoginActivity;
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.viewUser.data.model.Route;
 import com.example.mueveteunac2.viewUser.data.model.Stop;
-import com.example.mueveteunac2.viewUser.domain.useCase.MoveRouteMapInfoUseCase;
+import com.example.mueveteunac2.viewUser.domain.MoveRouteMapInfoUseCase;
 import com.example.mueveteunac2.viewUser.ui.view.UserActivity;
 import com.example.mueveteunac2.viewUser.ui.viewModel.RouteViewModel;
 import com.google.firebase.auth.FirebaseAuth;

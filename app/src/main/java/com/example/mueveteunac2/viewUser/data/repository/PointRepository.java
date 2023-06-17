@@ -4,7 +4,7 @@ import com.example.mueveteunac2.viewUser.data.model.Stop;
 import com.example.mueveteunac2.viewUser.data.network.OpenRouteServiceAPI;
 import com.example.mueveteunac2.viewUser.data.model.PointResponse;
 import com.example.mueveteunac2.viewUser.data.network.core.RetrofitRequest;
-import com.example.mueveteunac2.viewUser.domain.useCase.GetPointsApiUseCase;
+import com.example.mueveteunac2.viewUser.domain.GetPointsApiUseCase;
 
 import org.json.JSONArray;
 import java.util.List;

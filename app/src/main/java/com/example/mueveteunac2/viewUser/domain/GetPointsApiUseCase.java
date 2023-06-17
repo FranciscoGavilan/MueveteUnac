@@ -1,4 +1,4 @@
-package com.example.mueveteunac2.viewUser.domain.useCase;
+package com.example.mueveteunac2.viewUser.domain;
 
 import com.example.mueveteunac2.viewUser.data.model.PointResponse;
 

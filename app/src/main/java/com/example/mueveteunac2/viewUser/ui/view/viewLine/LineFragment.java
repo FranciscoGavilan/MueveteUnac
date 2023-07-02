@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import com.example.mueveteunac2.viewUser.ui.viewModel.LineViewModel;
 import java.util.List;
 
 public class LineFragment extends Fragment{
+
     private LineAdapter lineAdapter;
     private RecyclerView recyclerViewLine;
     private LineViewModel lineViewModel;

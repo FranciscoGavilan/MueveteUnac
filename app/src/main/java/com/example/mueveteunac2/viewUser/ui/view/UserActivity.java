@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -57,10 +58,9 @@ public class UserActivity extends AppCompatActivity {
                         .into(image);
             }
         }
-
     }
 
-    public void showPopup(View v) {
+    /*public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.inicio, popup.getMenu());
@@ -79,6 +79,6 @@ public class UserActivity extends AppCompatActivity {
             }
         });
         popup.show();
-    }
+    }*/
 
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.mueveteunac2.viewUser.data.model.Line;
 import com.example.mueveteunac2.viewUser.data.repository.LineRepository;
-import com.example.mueveteunac2.viewUser.domain.useCase.GetLinesUseCase;
+import com.example.mueveteunac2.viewUser.domain.GetLinesUseCase;
 
 import java.util.List;
 

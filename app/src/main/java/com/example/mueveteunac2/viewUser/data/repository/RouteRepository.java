@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 import com.example.mueveteunac2.viewUser.data.model.Route;
 import com.example.mueveteunac2.viewUser.data.model.Stop;
-import com.example.mueveteunac2.viewUser.domain.useCase.GetRouteUseCase;
+import com.example.mueveteunac2.viewUser.domain.GetRouteUseCase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;

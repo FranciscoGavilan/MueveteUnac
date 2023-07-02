@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mueveteunac2.viewUser.domain.useCase.MoveRouteMapInfoUseCase;
+import com.example.mueveteunac2.viewUser.domain.MoveRouteMapInfoUseCase;
 import com.example.mueveteunac2.viewUser.ui.adapter.StopAdapter;
 import com.example.mueveteunac2.viewUser.data.model.Route;
 import com.example.mueveteunac2.viewUser.data.model.Stop;

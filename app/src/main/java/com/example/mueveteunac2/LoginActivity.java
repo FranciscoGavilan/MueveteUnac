@@ -22,6 +22,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -71,6 +75,25 @@ public class LoginActivity extends AppCompatActivity {
     public void updateUI(FirebaseUser account){
 
         if(account != null){
+            String userId=account.getUid();
+            String userName=account.getDisplayName();
+            String userEmail=account.getEmail();
+            String userImage=account.getPhotoUrl().toString();
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("userName", userName);
+            userData.put("userEmail", userEmail);
+            userData.put("userImage", userImage);
+            // Otros datos de Google SignIn...
+
+            // Guarda los datos del usuario en Firestore
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("User").document(userId).set(userData)
+                    .addOnSuccessListener(aVoid -> {
+                        // Los datos del usuario se guardaron correctamente
+                    })
+                    .addOnFailureListener(e -> {
+                        // Hubo un error al guardar los datos del usuario
+                    });
             Intent intent=new Intent(getApplicationContext(), UserActivity.class);
             startActivity(intent);
             this.finish();

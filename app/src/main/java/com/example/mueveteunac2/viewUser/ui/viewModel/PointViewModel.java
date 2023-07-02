@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.mueveteunac2.viewUser.data.model.Stop;
 import com.example.mueveteunac2.viewUser.data.repository.PointRepository;
 import com.example.mueveteunac2.viewUser.data.model.PointResponse;
-import com.example.mueveteunac2.viewUser.domain.useCase.GetPointsApiUseCase;
+import com.example.mueveteunac2.viewUser.domain.GetPointsApiUseCase;
 
 import java.util.List;
 

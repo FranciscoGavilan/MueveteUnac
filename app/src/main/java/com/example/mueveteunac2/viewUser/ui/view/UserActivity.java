@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.mueveteunac2.LoginActivity;
+import com.example.mueveteunac2.ProfileActivity;
 import com.example.mueveteunac2.R;
 import com.example.mueveteunac2.databinding.ActivityUserBinding;
 import com.example.mueveteunac2.viewUser.ui.adapter.UserSectionsPagerAdapter;
@@ -58,6 +59,13 @@ public class UserActivity extends AppCompatActivity {
                         .into(image);
             }
         }
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /*public void showPopup(View v) {
